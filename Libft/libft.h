@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkyaw <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 17:45:56 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/08/30 17:45:58 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/09/01 12:29:49 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ char			*ft_strjoin(char const *s1, char const *s2);
 unsigned long	ft_strlcat(char *dst, const char *src, unsigned long size);
 unsigned long	ft_strlcpy(char *dst, const char *src, unsigned long size);
 unsigned long	ft_strlen(const char *str);
+char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int				ft_strncmp(const char *s1, const char *s2, unsigned long n);
 char			*ft_strnstr(const char *big, const char *little,
 					unsigned long len);
