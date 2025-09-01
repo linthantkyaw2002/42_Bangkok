@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 17:45:56 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/09/01 12:29:49 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/09/01 13:11:52 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void			*ft_memset(void *s, int c, unsigned long n);
 char			**ft_split(char const *s, char c);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strdup(const char *src);
+void			ft_striteri(char *s, void (*f)(unsigned int, char*));
 char			*ft_strjoin(char const *s1, char const *s2);
 unsigned long	ft_strlcat(char *dst, const char *src, unsigned long size);
 unsigned long	ft_strlcpy(char *dst, const char *src, unsigned long size);
