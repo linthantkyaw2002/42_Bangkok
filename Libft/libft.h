@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*   By: admin <admin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 17:45:56 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/09/01 13:11:52 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/09/02 10:50:51 by admin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <stdlib.h>
+# include <unistd.h>
 
 int				ft_atoi(const char *str);
 void			ft_bzero(void *s, unsigned long n);
@@ -29,6 +30,10 @@ int				ft_memcmp(const void *s1, const void *s2, unsigned long n);
 void			*ft_memcpy(void *dest, const void *src, unsigned long n);
 void			*ft_memmove(void *dest, const void *src, unsigned long n);
 void			*ft_memset(void *s, int c, unsigned long n);
+void			ft_putchar_fd(char c, int fd);
+void			ft_putendl_fd(char *s, int fd);
+void			ft_putnbr_fd(int n, int fd);
+void			ft_putstr_fd(char *s, int fd);
 char			**ft_split(char const *s, char c);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strdup(const char *src);

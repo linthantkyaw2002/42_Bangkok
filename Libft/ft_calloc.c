@@ -17,15 +17,17 @@
 void	*ft_calloc(long nelem, long elsize)
 {
 	char			*array;
-	unsigned long	n;
-	unsigned long	i;
+	unsigned int	n;
+	unsigned int	i;
 
 	if (nelem == 0 || elsize == 0)
 		return ((void *)malloc(1));
 	if (nelem < 0 || elsize < 0)
 		return (NULL);
 	i = 0;
-	n = (unsigned long)nelem * (unsigned long)elsize;
+	n = (unsigned int)nelem * (unsigned int)elsize;
+	if (n / (unsigned int)elsize != (unsigned int)nelem)
+		return (NULL);
 	array = malloc(n);
 	if (!array)
 		return (NULL);
