@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lkyaw <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/27 15:52:37 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/08/27 16:25:53 by lkyaw            ###   ########.fr       */
+/*   Created: 2025/09/01 11:34:30 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/09/01 11:46:33 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 //#include <stdio.h>
+#include "libft.h"
 
 int	ft_intcount(int n)
 {
@@ -39,7 +39,7 @@ char	*ft_itos_pos(int n)
 	char	*arr;
 
 	len = ft_intcount(n);
-	arr = malloc(len + 1);
+	arr = (char *)malloc(len + 1);
 	if (!arr)
 		return (NULL);
 	num = n;
@@ -95,13 +95,7 @@ int	main(void)
 {
 	char *arr;
 
-	arr = ft_itoa(-312323312);
-	printf("%s\n", arr);
-	free(arr);
-	arr = ft_itoa(0);
-	printf("%s\n", arr);
-	free(arr);
-	arr = ft_itoa(2312332);
+	arr = ft_itoa(-213231221);
 	printf("%s\n", arr);
 	free(arr);
 }*/
