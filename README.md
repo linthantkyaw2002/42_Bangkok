@@ -8,6 +8,7 @@
 int	ft_atoi(const char *str);
 /*
 ** Converts the initial portion of the string 'str' to an integer.
+
 ** Parameters: str - string to convert.
 ** Return: integer value represented by the string.
 ** External functions: none.
