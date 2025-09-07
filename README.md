@@ -5,6 +5,7 @@
 # include <unistd.h>
 
 /* Conversion */
+
 int	ft_atoi(const char *str);
 
 /*
