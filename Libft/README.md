@@ -4,7 +4,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-* Conversion *
+/* Conversion */
 
 int	ft_atoi(const char *str);
 - Converts the initial portion of the string 'str' to an integer.
@@ -19,7 +19,7 @@ char	*ft_itoa(int n);
 - External functions: malloc.
 
 
-* Memory *
+/* Memory */
 
 void	ft_bzero(void *s, unsigned long n);
 - Sets the first 'n' bytes of the memory area pointed to by 's' to zero.
@@ -64,7 +64,7 @@ void	*ft_memset(void *s, int c, unsigned long n);
 - External functions: none.
 
 
-* Character checks *
+/* Character checks */
 
 int	ft_isalnum(int c)
 - Checks if the character 'c' is alphanumeric (letter or digit).
@@ -99,7 +99,7 @@ int	ft_isprint(int c);
 - External functions: none.
 
 
-* Character conversion *
+/* Character conversion */
 
 int	ft_toupper(int c);
 - Converts lowercase character 'c' to uppercase.
@@ -114,7 +114,7 @@ int	ft_tolower(int c);
 - External functions: none.
 
 
-* String manipulation *
+/* String manipulation */
 
 unsigned long	ft_strlen(const char *str);  
 - Computes the length of string 'str' (excluding null terminator).
@@ -201,7 +201,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 - External functions: malloc.
 
 
-* File descriptor output *
+/* File descriptor output */
 
 void	ft_putchar_fd(char c, int fd);
 - Writes character 'c' to the file descriptor 'fd'.
@@ -228,7 +228,7 @@ void	ft_putnbr_fd(int n, int fd);
 - External functions: write.
 
 
-* Linked list *
+/* Linked list */
 
 typedef struct s_list
 {
