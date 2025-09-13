@@ -18,11 +18,11 @@ int	main(void)
 {
 	int	i;
 
-	i = printf("cspdikuxX%  ");
+	i = printf("%d",printf("cspdikuxX"));
 	printf("\n");
 	printf("%i", i);
 	printf("\n");
-	i = ft_printf("cspdkiuxX%  ");
+	i = ft_printf("%d",ft_printf("cspdkiuxX"));
 	printf("\n");
 	printf("%i", i);
 }

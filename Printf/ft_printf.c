@@ -46,9 +46,10 @@ int	ft_printf(const char *str, ...)
 	va_list	args;
 	int		i;
 
+	ft_count(1);
 	va_start(args, str);
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == '%')
 		{
@@ -62,9 +63,8 @@ int	ft_printf(const char *str, ...)
 		}
 		else
 			ft_putchar(str[i]);
-		i++;
 	}
 	va_end(args);
-	i = ft_count() - 1;
+	i = ft_count(0) - 1;
 	return (i);
 }

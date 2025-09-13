@@ -12,11 +12,14 @@
 
 #include "ft_printf.h"
 
-int	ft_count(void)
+int	ft_count(int reset)
 {
 	static int	count = 0;
 
-	count++;
+	if (reset)
+		count = 0;
+	else
+		count++;
 	return (count);
 }
 
@@ -26,7 +29,7 @@ void	ft_putchar(int i)
 
 	c = i;
 	write(1, &c, 1);
-	ft_count();
+	ft_count(0);
 }
 
 void	ft_putstr(char *str)
