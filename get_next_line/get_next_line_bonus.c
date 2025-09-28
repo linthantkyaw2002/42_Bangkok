@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/27 12:46:37 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/09/28 11:56:33 by lkyaw            ###   ########.fr       */
+/*   Created: 2025/09/28 13:57:44 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/09/28 14:30:07 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_extract_line(char **leftover)
 {
@@ -76,14 +76,14 @@ char	*read_into_leftover(int fd, char *leftover)
 
 char	*get_next_line(int fd)
 {
-	static char	*leftover;
+	static char	*leftover[MAX_FD];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	leftover = read_into_leftover(fd, leftover);
-	if (!leftover)
+	leftover[fd] = read_into_leftover(fd, leftover[fd]);
+	if (!leftover[fd])
 		return (NULL);
-	line = ft_extract_line(&leftover);
+	line = ft_extract_line(&leftover[fd]);
 	return (line);
 }
