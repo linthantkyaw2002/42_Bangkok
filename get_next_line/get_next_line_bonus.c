@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/28 13:57:44 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/09/28 14:30:07 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/10/18 20:10:05 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ char	*ft_extract_line(char **leftover)
 	int		index;
 
 	if (!(*leftover) || !(**leftover))
+	{
+		free(*leftover);
+		*leftover = NULL;
 		return (NULL);
+	}
 	index = ft_strchr_index(*leftover, '\n');
 	if (index >= 0)
 	{
@@ -39,36 +43,39 @@ char	*ft_extract_line(char **leftover)
 
 int	leftover_join(char **leftover, char *buffer)
 {
-	*leftover = ft_strjoin(*leftover, buffer);
-	if (!*leftover)
+	char	*joined;
+
+	joined = ft_strjoin(*leftover, buffer);
+	if (!joined)
 	{
-		free(buffer);
+		free(*leftover);
+		*leftover = NULL;
 		return (0);
 	}
+	*leftover = joined;
 	return (1);
 }
 
 char	*read_into_leftover(int fd, char *leftover)
 {
 	char	*buffer;
-	ssize_t	bytes_read;
+	ssize_t	bytes;
 
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
-		return (NULL);
+		return (free(leftover), NULL);
 	while (ft_strchr_index(leftover, '\n') < 0)
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read < 0)
+		bytes = read(fd, buffer, BUFFER_SIZE);
+		if (bytes <= 0)
 		{
-			free(buffer);
-			return (NULL);
-		}
-		if (bytes_read == 0)
+			if (bytes < 0)
+				free(leftover);
 			break ;
-		buffer[bytes_read] = '\0';
+		}
+		buffer[bytes] = '\0';
 		if (!leftover_join(&leftover, buffer))
-			return (NULL);
+			return (free(buffer), NULL);
 	}
 	free(buffer);
 	return (leftover);
