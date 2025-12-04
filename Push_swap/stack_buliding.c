@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:47:09 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/03 14:54:03 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/12/03 22:27:49 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,18 @@ t_stack	*build_stack(int ac, char **av)
 }
 
 /* free the stack */
-void	free_stack(t_stack **a)
-{
-	t_stack *tmp;
+#include "push_swap.h"
 
-	while (*a)
+void	free_stack(t_stack **stack)
+{
+	t_stack	*tmp;
+
+	if (!stack)
+		return ;
+	while (*stack)
 	{
-		tmp = (*a)->next;
-		free(*a);
-		*a = tmp;
+		tmp = (*stack)->next;
+		free(*stack);
+		*stack = tmp;
 	}
 }
