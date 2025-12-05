@@ -1,23 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   stack_buliding.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/03 14:47:09 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/03 22:27:49 by lkyaw            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "push_swap.h"
 
-/* create new node */
 t_stack	*stack_new(int value)
 {
 	t_stack	*node;
 
-	node = (t_stack *)malloc(sizeof(t_stack));
+	node = malloc(sizeof(t_stack));
 	if (!node)
 		return (NULL);
 	node->value = value;
@@ -26,57 +13,51 @@ t_stack	*stack_new(int value)
 	return (node);
 }
 
-/* add node at the end of stack a */
-void	stack_add_back(t_stack **a, t_stack *new_node)
+static void	process_token(const char *s, t_stack **a)
 {
-	t_stack	*tmp;
-
-	if (!new_node)
-		return ;
-	if (!*a)
-	{
-		*a = new_node;
-		return ;
-	}
-	tmp = *a;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new_node;
-}
-
-/* add a node onto the top */
-void	stack_add_front(t_stack **stack, t_stack *new_node)
-{
-	if (!new_node)
-		return ;
-	new_node->next = *stack;
-	*stack = new_node;
-}
-
-/* build stack a from command line arguments */
-t_stack	*build_stack(int ac, char **av)
-{
-	t_stack	*a;
+	int		err;
+	int		value;
 	t_stack	*node;
+
+	value = ps_atoi(s, &err);
+	if (err || has_duplicate(*a, value))
+		error_exit(a, NULL);
+	node = stack_new(value);
+	if (!node)
+		error_exit(a, NULL);
+	stack_add_back(a, node);
+}
+
+static void	process_arg(char *arg, t_stack **a)
+{
+	char	**tokens;
 	int		i;
 
-	a = NULL;
-	i = 1;
-	while (i < ac)
+	tokens = ft_split(arg, ' ');
+	if (!tokens)
+		error_exit(a, NULL);
+	i = 0;
+	while (tokens[i])
 	{
-		node = stack_new(ft_atoi(av[i]));
-		if (!node)
-		{
-			return (NULL);
-		}
-		stack_add_back(&a, node);
+		process_token(tokens[i], a);
 		i++;
 	}
-	return (a);
+	free_split(tokens);
 }
 
-/* free the stack */
-#include "push_swap.h"
+void	parse_args(int argc, char **argv, t_stack **a)
+{
+	int	i;
+
+	i = 1;
+	while (i < argc)
+	{
+		if (argv[i][0] == '\0')
+			error_exit(a, NULL);
+		process_arg(argv[i], a);
+		i++;
+	}
+}
 
 void	free_stack(t_stack **stack)
 {

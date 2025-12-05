@@ -6,12 +6,11 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:47:01 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/03 22:49:42 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/12/05 11:20:08 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <limits.h>
 
 /* check for whitespace characters */
 static int	is_space(char c)
