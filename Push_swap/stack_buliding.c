@@ -58,17 +58,3 @@ void	parse_args(int argc, char **argv, t_stack **a)
 		i++;
 	}
 }
-
-void	free_stack(t_stack **stack)
-{
-	t_stack	*tmp;
-
-	if (!stack)
-		return ;
-	while (*stack)
-	{
-		tmp = (*stack)->next;
-		free(*stack);
-		*stack = tmp;
-	}
-}
