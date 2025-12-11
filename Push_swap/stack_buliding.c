@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stack_buliding.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/10 08:50:34 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/12/10 10:11:38 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
+/* Create a new stack node */
 t_stack	*stack_new(int value)
 {
 	t_stack	*node;
@@ -13,6 +26,7 @@ t_stack	*stack_new(int value)
 	return (node);
 }
 
+/* Process a single token into the stack */
 static void	process_token(const char *s, t_stack **a)
 {
 	int		err;
@@ -28,6 +42,7 @@ static void	process_token(const char *s, t_stack **a)
 	stack_add_back(a, node);
 }
 
+/* Process each argument which may contain multiple numbers */
 static void	process_arg(char *arg, t_stack **a)
 {
 	char	**tokens;
@@ -45,6 +60,7 @@ static void	process_arg(char *arg, t_stack **a)
 	free_split(tokens);
 }
 
+/* Parse all command-line arguments into the stack */
 void	parse_args(int argc, char **argv, t_stack **a)
 {
 	int	i;

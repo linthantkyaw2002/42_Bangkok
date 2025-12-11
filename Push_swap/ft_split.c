@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/10 08:50:00 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/12/10 08:50:00 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
+/* Count the number of substrings separated by delimiter c */
 static int	ft_substrcount(char const *s, char c)
 {
 	int	i;
@@ -23,6 +36,7 @@ static int	ft_substrcount(char const *s, char c)
 	return (count);
 }
 
+/* Free allocated memory in case of failure */
 static void	ft_freearr(char **arr, int last)
 {
 	while (last >= 0)
@@ -30,6 +44,7 @@ static void	ft_freearr(char **arr, int last)
 	free(arr);
 }
 
+/* Allocate memory for each substring */
 static int	ft_malword(char const *s, char c, char **arr)
 {
 	int	i;
@@ -57,6 +72,7 @@ static int	ft_malword(char const *s, char c, char **arr)
 	return (1);
 }
 
+/* Copy substrings into allocated memory */
 static void	ft_subcpy(char const *s, char c, char **arr)
 {
 	int	i;
@@ -83,6 +99,7 @@ static void	ft_subcpy(char const *s, char c, char **arr)
 	}
 }
 
+/* Main split function */
 char	**ft_split(char const *s, char c)
 {
 	char	**arr;

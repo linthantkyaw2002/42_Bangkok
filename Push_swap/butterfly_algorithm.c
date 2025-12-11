@@ -1,44 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   butterfly_algorithm.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/10 14:37:50 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/12/10 14:37:50 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-static void	handle_push_logic(t_stack **a, t_stack **b,
-			int chunk, int *target, int *pushed)
+/*
+** vars[0] = target
+** vars[1] = pushed
+*/
+
+/* Handle the logic for pushing elements from A to B based on index */
+static void	handle_push_logic(t_stack **a, t_stack **b, int chunk, int *vars)
 {
 	int	idx;
 
 	idx = (*a)->index;
-	if (idx <= *target)
+	if (idx <= vars[0])
 	{
 		pb(a, b);
 		rb(b);
-		(*target)++;
-		(*pushed)++;
+		vars[0]++;
+		vars[1]++;
 	}
-	else if (idx <= *target + chunk)
+	else if (idx <= vars[0] + chunk)
 	{
 		pb(a, b);
-		(*target)++;
-		(*pushed)++;
+		vars[0]++;
+		vars[1]++;
 	}
 	else
 		ra(a);
 }
 
+/* Push elements from stack A to B in chunks */
 static void	push_chunks_to_b(t_stack **a, t_stack **b, int size)
 {
 	int	chunk;
-	int	pushed;
-	int	target;
+	int	vars[2];
 
 	if (size <= 100)
 		chunk = 15;
 	else
 		chunk = 30;
-	pushed = 0;
-	target = 0;
-	while (pushed < size)
-		handle_push_logic(a, b, chunk, &target, &pushed);
+	vars[0] = 0;
+	vars[1] = 0;
+	while (vars[1] < size)
+		handle_push_logic(a, b, chunk, vars);
 }
 
+/* Get the position of the maximum indexed node in stack B */
 static int	get_max_pos(t_stack *b)
 {
 	int	max;
@@ -63,6 +81,7 @@ static int	get_max_pos(t_stack *b)
 	return (max_pos);
 }
 
+/* Push all elements back from B to A in sorted order */
 static void	push_back_to_a(t_stack **a, t_stack **b)
 {
 	int	size;
@@ -88,13 +107,12 @@ static void	push_back_to_a(t_stack **a, t_stack **b)
 	}
 }
 
+/* Main butterfly algorithm function */
 void	butterfly(t_stack **a, t_stack **b)
 {
 	int	size;
 
 	size = stack_size(*a);
-	if (size <= 3)
-		return ;
 	push_chunks_to_b(a, b, size);
 	push_back_to_a(a, b);
 }

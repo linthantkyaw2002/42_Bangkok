@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:47:01 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/05 11:20:08 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/12/10 08:56:10 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ static long	parse_digits(const char *str, int *i, int sign, int *err)
 	while (is_digit(str[*i]))
 	{
 		result = result * 10 + (str[*i] - '0');
-		if ((sign == 1 && result > INT_MAX)
-			|| (sign == -1 && (-result) < INT_MIN))
+		if ((sign == 1 && result > INT_MAX) || (sign == -1
+				&& (-result) < INT_MIN))
 		{
 			*err = 1;
 			return (0);

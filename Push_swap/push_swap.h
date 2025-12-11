@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 12:31:11 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/05 13:38:07 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/12/10 21:55:49 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void				rra(t_stack **a);
 void				rrb(t_stack **b);
 
 /*sort_ff.c*/
-void	sort_four(t_stack **a, t_stack **b);
-void	sort_five(t_stack **a, t_stack **b);
+void				sort_four(t_stack **a, t_stack **b);
+void				sort_five(t_stack **a, t_stack **b);
 /* sort.c */
 int					is_sorted(t_stack *a);
 void				sort_two(t_stack **a);

@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/10 08:48:46 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/12/10 08:48:46 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
+/* Check if the stack is sorted in ascending order */
 int	is_sorted(t_stack *a)
 {
 	if (!a)
@@ -13,14 +26,16 @@ int	is_sorted(t_stack *a)
 	return (1);
 }
 
+/* Sort stack with two elements */
 void	sort_two(t_stack **a)
 {
 	if (!a || !*a || !(*a)->next)
 		return ;
 	if ((*a)->value > (*a)->next->value)
-		sa(a);
+		return (sa(a));
 }
 
+/* Sort stack with three elements */
 void	sort_three(t_stack **a)
 {
 	int	first;
@@ -50,9 +65,10 @@ void	sort_three(t_stack **a)
 		rra(a);
 }
 
+/* General sort function */
 void	sort(t_stack **a, t_stack **b)
 {
-	int size;
+	int	size;
 
 	if (!a || !*a)
 		return ;

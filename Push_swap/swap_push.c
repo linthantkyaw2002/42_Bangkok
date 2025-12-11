@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   swap_push.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/10 08:56:40 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/12/10 08:56:40 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 /* Swaps the first two elements of stack a */
@@ -31,7 +43,7 @@ void	pa(t_stack **a, t_stack **b)
 /* push the top node from stack a to stack b */
 void	pb(t_stack **a, t_stack **b)
 {
-	t_stack *node;
+	t_stack	*node;
 
 	node = stack_pop_front(a);
 	if (!node)

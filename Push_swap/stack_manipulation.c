@@ -6,11 +6,19 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:47:14 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/05 10:55:11 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/12/10 10:09:51 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+/* add a node onto the top */
+void	stack_add_front(t_stack **stack, t_stack *new_node)
+{
+	if (!new_node)
+		return ;
+	new_node->next = *stack;
+	*stack = new_node;
+}
 
 /* add node at the end of stack a */
 void	stack_add_back(t_stack **stack, t_stack *new_node)
@@ -30,14 +38,6 @@ void	stack_add_back(t_stack **stack, t_stack *new_node)
 	tmp->next = new_node;
 }
 
-/* add a node onto the top */
-void	stack_add_front(t_stack **stack, t_stack *new_node)
-{
-	if (!new_node)
-		return ;
-	new_node->next = *stack;
-	*stack = new_node;
-}
 /* remove and return the top node */
 t_stack	*stack_pop_front(t_stack **stack)
 {

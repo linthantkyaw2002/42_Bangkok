@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sort_ff.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/10 08:49:50 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/12/10 08:49:50 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
+/* Get the position of the minimum value node in stack A */
 static int	get_min_pos(t_stack *a)
 {
 	int	min;
@@ -24,6 +37,7 @@ static int	get_min_pos(t_stack *a)
 	return (min_pos);
 }
 
+/* Push the minimum value node from A to B */
 static void	push_min_to_b(t_stack **a, t_stack **b)
 {
 	int	min_pos;
@@ -45,6 +59,7 @@ static void	push_min_to_b(t_stack **a, t_stack **b)
 	pb(a, b);
 }
 
+/* Sort stack with four elements */
 void	sort_four(t_stack **a, t_stack **b)
 {
 	push_min_to_b(a, b);
@@ -52,6 +67,7 @@ void	sort_four(t_stack **a, t_stack **b)
 	pa(a, b);
 }
 
+/* Sort stack with five elements */
 void	sort_five(t_stack **a, t_stack **b)
 {
 	push_min_to_b(a, b);
