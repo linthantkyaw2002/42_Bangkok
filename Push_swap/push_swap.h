@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 12:31:11 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/10 21:55:49 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/12/11 12:12:28 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <limits.h>
 # include <stdlib.h>
 # include <unistd.h>
+# define TARGET 0
+# define PUSHED 1
 
 typedef struct s_stack
 {

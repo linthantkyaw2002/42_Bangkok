@@ -5,17 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/10 14:37:50 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/10 14:37:50 by lkyaw            ###   ########.fr       */
+/*   Created: 2025/12/11 12:14:53 by lkyaw             #+#    #+#             */
+/*   Updated: 2025/12/11 12:14:53 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-/*
-** vars[0] = target
-** vars[1] = pushed
-*/
 
 /* Handle the logic for pushing elements from A to B based on index */
 static void	handle_push_logic(t_stack **a, t_stack **b, int chunk, int *vars)
@@ -23,18 +18,18 @@ static void	handle_push_logic(t_stack **a, t_stack **b, int chunk, int *vars)
 	int	idx;
 
 	idx = (*a)->index;
-	if (idx <= vars[0])
+	if (idx <= vars[TARGET])
 	{
 		pb(a, b);
 		rb(b);
-		vars[0]++;
-		vars[1]++;
+		vars[TARGET]++;
+		vars[PUSHED]++;
 	}
-	else if (idx <= vars[0] + chunk)
+	else if (idx <= vars[TARGET] + chunk)
 	{
 		pb(a, b);
-		vars[0]++;
-		vars[1]++;
+		vars[TARGET]++;
+		vars[PUSHED]++;
 	}
 	else
 		ra(a);
@@ -50,9 +45,9 @@ static void	push_chunks_to_b(t_stack **a, t_stack **b, int size)
 		chunk = 15;
 	else
 		chunk = 30;
-	vars[0] = 0;
-	vars[1] = 0;
-	while (vars[1] < size)
+	vars[TARGET] = 0;
+	vars[PUSHED] = 0;
+	while (vars[PUSHED] < size)
 		handle_push_logic(a, b, chunk, vars);
 }
 
