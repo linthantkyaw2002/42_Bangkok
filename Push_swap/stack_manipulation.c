@@ -6,11 +6,13 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:47:14 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/10 10:09:51 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/12/12 21:57:39 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include "./checker_bonus.h"
+
 /* add a node onto the top */
 void	stack_add_front(t_stack **stack, t_stack *new_node)
 {

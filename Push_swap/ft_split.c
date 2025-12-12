@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include "./checker_bonus.h"
 
 /* Count the number of substrings separated by delimiter c */
 static int	ft_substrcount(char const *s, char c)

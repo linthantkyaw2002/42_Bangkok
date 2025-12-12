@@ -12,20 +12,6 @@
 
 #include "push_swap.h"
 
-/* Check if the stack is sorted in ascending order */
-int	is_sorted(t_stack *a)
-{
-	if (!a)
-		return (1);
-	while (a->next)
-	{
-		if (a->value > a->next->value)
-			return (0);
-		a = a->next;
-	}
-	return (1);
-}
-
 /* Sort stack with two elements */
 void	sort_two(t_stack **a)
 {

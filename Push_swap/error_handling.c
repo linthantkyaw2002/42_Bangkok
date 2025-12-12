@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "./checker_bonus.h"
 #include "push_swap.h"
 
 /* check for duplicate values in the stack */
@@ -64,4 +65,18 @@ void	error_exit(t_stack **a, t_stack **b)
 		free_stack(b);
 	write(2, "Error\n", 6);
 	exit(1);
+}
+
+/* Check if the stack is sorted in ascending order */
+int	is_sorted(t_stack *a)
+{
+	if (!a)
+		return (1);
+	while (a->next)
+	{
+		if (a->value > a->next->value)
+			return (0);
+		a = a->next;
+	}
+	return (1);
 }
