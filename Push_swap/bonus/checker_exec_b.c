@@ -12,6 +12,7 @@
 
 #include "../checker_bonus.h"
 
+/* strcmp function to compare two strings */
 static int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
@@ -26,6 +27,7 @@ static int	ft_strcmp(char *s1, char *s2)
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
 
+/* Check if the operation is valid */
 static int	is_valid_op(char *line)
 {
 	return (!ft_strcmp(line, "sa\n") || !ft_strcmp(line, "sb\n")
@@ -36,6 +38,7 @@ static int	is_valid_op(char *line)
 		|| !ft_strcmp(line, "rrr\n"));
 }
 
+/* Execute the operation on stacks a and b */
 static void	exec_op2(char *line, t_stack **a, t_stack **b)
 {
 	if (!ft_strcmp(line, "rra\n"))
@@ -48,6 +51,7 @@ static void	exec_op2(char *line, t_stack **a, t_stack **b)
 		error_exit(a, b);
 }
 
+/* Main function to execute the operation */
 void	exec_op(char *line, t_stack **a, t_stack **b)
 {
 	if (!is_valid_op(line))

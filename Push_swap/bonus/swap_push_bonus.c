@@ -42,6 +42,7 @@ void	sb_silent(t_stack **b)
 	*b = second;
 }
 
+/* swap top 2 of both a and b */
 void	ss_silent(t_stack **a, t_stack **b)
 {
 	sa_silent(a);

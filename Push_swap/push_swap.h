@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/05 12:31:11 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/12/11 12:12:28 by lkyaw            ###   ########.fr       */
+/*   Updated: 2025/12/13 10:25:10 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void				butterfly(t_stack **a, t_stack **b);
 void				error_exit(t_stack **a, t_stack **b);
 int					has_duplicate(t_stack *a, int value);
 void				free_split(char **arr);
+int					is_sorted(t_stack *a);
 
 /* ft_split.c */
 char				**ft_split(char const *s, char c);
@@ -53,7 +54,6 @@ void				rrb(t_stack **b);
 void				sort_four(t_stack **a, t_stack **b);
 void				sort_five(t_stack **a, t_stack **b);
 /* sort.c */
-int					is_sorted(t_stack *a);
 void				sort_two(t_stack **a);
 void				sort_three(t_stack **a);
 void				sort(t_stack **a, t_stack **b);

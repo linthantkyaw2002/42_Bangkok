@@ -34,6 +34,7 @@ void	rrb_silent(t_stack **b)
 	stack_add_front(b, node);
 }
 
+/* reverse rotate both a and b */
 void	rrr_silent(t_stack **a, t_stack **b)
 {
 	rra_silent(a);

@@ -34,6 +34,7 @@ void	rb_silent(t_stack **b)
 	stack_add_back(b, node);
 }
 
+/* rotate both a and b */
 void	rr_silent(t_stack **a, t_stack **b)
 {
 	ra_silent(a);
