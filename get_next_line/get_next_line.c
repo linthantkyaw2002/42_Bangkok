@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:46:37 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/10/18 20:10:07 by lkyaw            ###   ########.fr       */
+/*   Updated: 2026/01/18 01:28:42 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	leftover_join(char **leftover, char *buffer)
 {
 	char	*joined;
 
-	joined = ft_strjoin(*leftover, buffer);
+	joined = ft_gnljoin(*leftover, buffer);
 	if (!joined)
 	{
 		free(*leftover);

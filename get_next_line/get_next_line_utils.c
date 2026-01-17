@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/27 12:47:59 by lkyaw             #+#    #+#             */
-/*   Updated: 2025/09/28 11:46:32 by lkyaw            ###   ########.fr       */
+/*   Updated: 2026/01/18 01:30:19 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_gnljoin(char *s1, char *s2)
 {
 	char	*str;
 	int		i;
