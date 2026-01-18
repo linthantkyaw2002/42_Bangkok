@@ -29,6 +29,7 @@ SRCS		= main.c \
 			  map_utils.c \
 			  draw.c \
 			  textures.c \
+			  move.c \
 			  get_next_line/get_next_line.c \
 			  get_next_line/get_next_line_utils.c
 

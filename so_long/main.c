@@ -18,21 +18,29 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		return (1);
 	game.map = load_map(av[1]);
+	if (!game.map)
+		return (1);
 	validate_map(game.map);
-	flood_fill(game.map);
-
+	flood_fill(game.map); // Double check it's winnable
+	
+	// Set window dimensions
 	game.width = map_width(game.map) * 32;
 	game.height = map_height_arr(game.map) * 32;
 
 	game.mlx = mlx_init();
-	if (!game.mlx)
-		return (1);
 	game.win = mlx_new_window(game.mlx, game.width, game.height, "so_long");
-
+    
 	load_textures(&game);
-	draw_map(&game);
+	
+	/* --- PUT IT HERE --- */
+	init_game_state(&game); 
+	/* ------------------- */
 
+	draw_map(&game); // This first draw now has correct player/collectible data
+    
+	mlx_hook(game.win, KeyPress, KeyPressMask, handle_keypress, &game);
 	mlx_hook(game.win, 17, 0, close_game, &game);
+	
 	mlx_loop(game.mlx);
 	return (0);
 }

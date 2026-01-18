@@ -22,6 +22,10 @@ typedef struct s_game {
     char    **map;
     int     width;
     int     height;
+    int     player_x; // Track player X
+    int     player_y; // Track player Y
+    int     collect_count;
+    int     moves;    // Count movements for the shell
     t_img   floor;
     t_img   wall;
     t_img   collect;
@@ -30,14 +34,16 @@ typedef struct s_game {
     t_img   canvas;
 } t_game;
 
-// Function Prototypes
+// New Prototypes
+int     handle_keypress(int keysym, t_game *game);
+void    init_player_pos(t_game *game);
 char	**load_map(char *path);
 void	free_map(char **map);
 void	validate_map(char **map);
 void	flood_fill(char **map);
 int	    map_width(char **map);
 int	    map_height_arr(char **map);
-
+void   init_game_state(t_game *game);
 void    load_textures(t_game *game);
 void    draw_map(t_game *game);
 int     close_game(t_game *game);

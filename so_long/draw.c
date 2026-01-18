@@ -1,48 +1,108 @@
 #include "so_long.h"
+#include "libft.h"
 
-static void	my_pixel_put(t_img *canvas, int x, int y, int color)
+void	init_game_state(t_game *g)
 {
-    // Skip transparency (0xFF000000 or 0x000000 depending on your XPM)
-	if (color == (int)0xFF000000 || color == (int)0x000000)
-		return ;
-	char *dst = canvas->addr + (y * canvas->line_length + x * (canvas->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	int	x;
+	int	y;
+
+	g->collect_count = 0;
+	g->moves = 0;
+	y = 0;
+	while (g->map[y])
+	{
+		x = 0;
+		while (g->map[y][x])
+		{
+			if (g->map[y][x] == 'P')
+			{
+				g->player_x = x;
+				g->player_y = y;
+			}
+			else if (g->map[y][x] == 'C')
+				g->collect_count++;
+			x++;
+		}
+		y++;
+	}
+}
+
+#include "so_long.h"
+#include "libft.h"
+#include <mlx.h>
+
+static void	render_move_count(t_game *g)
+{
+	char	*moves_str;
+
+	moves_str = ft_itoa(g->moves);
+	if (moves_str)
+	{
+		mlx_string_put(g->mlx, g->win, 10, 20, 0xFFFFFF, "Steps: ");
+		mlx_string_put(g->mlx, g->win, 60, 20, 0xFFFFFF, moves_str);
+		free(moves_str);
+	}
 }
 
 static unsigned int	get_pixel_color(t_img *img, int x, int y)
 {
-	return (*(unsigned int *)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8))));
+	return (*(unsigned int *)(img->addr + (y * img->line_length + 
+			x * (img->bits_per_pixel / 8))));
+}
+
+static void	my_pixel_put(t_img *canvas, int x, int y, int color)
+{
+	char	*dst;
+
+	if (color == (int)0xFF000000 || color == (int)0x000000)
+		return ;
+	dst = canvas->addr + (y * canvas->line_length + x * (canvas->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
 }
 
 static void	draw_tile(t_game *g, t_img *img, int x, int y)
 {
-	for (int i = 0; i < 32; i++)
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < 32)
 	{
-		for (int j = 0; j < 32; j++)
+		j = 0;
+		while (j < 32)
 		{
-			unsigned int color = get_pixel_color(img, j, i);
-			my_pixel_put(&g->canvas, (x * 32) + j, (y * 32) + i, color);
+			my_pixel_put(&g->canvas, (x * 32) + j, (y * 32) + i, 
+				get_pixel_color(img, j, i));
+			j++;
 		}
+		i++;
 	}
 }
 
 void	draw_map(t_game *g)
 {
-	for (int y = 0; g->map[y]; y++)
+	int	x;
+	int	y;
+
+	y = 0;
+	while (g->map[y])
 	{
-		for (int x = 0; g->map[y][x]; x++)
+		x = 0;
+		while (g->map[y][x])
 		{
-			// Always draw floor first as background
 			draw_tile(g, &g->floor, x, y);
 			if (g->map[y][x] == '1')
 				draw_tile(g, &g->wall, x, y);
 			else if (g->map[y][x] == 'C')
 				draw_tile(g, &g->collect, x, y);
-			else if (g->map[y][x] == 'E')
+			else if (g->map[y][x] == 'E' && g->collect_count == 0)
 				draw_tile(g, &g->exit, x, y);
-			else if (g->map[y][x] == 'P')
+			if (x == g->player_x && y == g->player_y)
 				draw_tile(g, &g->player, x, y);
+			x++;
 		}
+		y++;
 	}
 	mlx_put_image_to_window(g->mlx, g->win, g->canvas.ptr, 0, 0);
+	render_move_count(g);
 }
