@@ -1,24 +1,28 @@
 #include "so_long.h"
 #include "libft.h"
-#include <mlx.h>
 
-//static void	load_img(t_game *g, t_img *img, char *path)
-//{
-//	img->img = mlx_xpm_file_to_image(g->mlx, path, &img->w, &img->h);
-//	if (!img->img)
-//	{
-//		ft_putendl_fd("Error: failed to load texture", 2);
-//		exit(1);
-//	}
-//	img->addr = mlx_get_data_addr(
-//		img->img,
-//		&img->bpp,
-//		&img->line_len,
-//		&img->endian
-//	);
-//	if (!img->addr)
-//	{
-//		ft_putendl_fd("Error: failed to get image data", 2);
-//		exit(1);
-//	}
-//}
+static void	load_img(t_game *g, t_img *img, char *path)
+{
+	img->ptr = mlx_xpm_file_to_image(g->mlx, path, &img->w, &img->h);
+	if (!img->ptr)
+	{
+		ft_putendl_fd("Error: Failed to load texture", 2);
+		exit(1);
+	}
+	img->addr = mlx_get_data_addr(img->ptr, &img->bits_per_pixel,
+                                  &img->line_length, &img->endian);
+}
+
+void	load_textures(t_game *g)
+{
+	load_img(g, &g->floor, "textures/floor.xpm");
+	load_img(g, &g->wall, "textures/wall.xpm");
+	load_img(g, &g->collect, "textures/collect.xpm");
+	load_img(g, &g->exit, "textures/exit.xpm");
+	load_img(g, &g->player, "textures/player.xpm");
+
+    // Create the blank canvas the size of the whole map
+	g->canvas.ptr = mlx_new_image(g->mlx, g->width, g->height);
+	g->canvas.addr = mlx_get_data_addr(g->canvas.ptr, &g->canvas.bits_per_pixel,
+                                       &g->canvas.line_length, &g->canvas.endian);
+}

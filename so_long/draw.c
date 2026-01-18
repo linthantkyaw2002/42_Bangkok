@@ -1,62 +1,48 @@
 #include "so_long.h"
-#include <mlx.h>
 
-static void	draw_floor(t_game *g)
+static void	my_pixel_put(t_img *canvas, int x, int y, int color)
 {
-	int	y;
-	int	x;
-
-	y = 0;
-	while (g->map[y])
-	{
-		x = 0;
-		while (g->map[y][x])
-		{
-			mlx_put_image_to_window(
-				g->mlx, g->win, g->floor.img, x * 32, y * 32);
-			x++;
-		}
-		y++;
-	}
+    // Skip transparency (0xFF000000 or 0x000000 depending on your XPM)
+	if (color == (int)0xFF000000 || color == (int)0x000000)
+		return ;
+	char *dst = canvas->addr + (y * canvas->line_length + x * (canvas->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
 }
 
-static void	draw_objects(t_game *g, char target)
+static unsigned int	get_pixel_color(t_img *img, int x, int y)
 {
-	int	y;
-	int	x;
+	return (*(unsigned int *)(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8))));
+}
 
-	y = 0;
-	while (g->map[y])
+static void	draw_tile(t_game *g, t_img *img, int x, int y)
+{
+	for (int i = 0; i < 32; i++)
 	{
-		x = 0;
-		while (g->map[y][x])
+		for (int j = 0; j < 32; j++)
 		{
-			if (g->map[y][x] == target)
-			{
-				if (target == '1')
-					mlx_put_image_to_window(g->mlx, g->win,
-						g->wall.img, x * 32, y * 32);
-				else if (target == 'C')
-					mlx_put_image_to_window(g->mlx, g->win,
-						g->collect.img, x * 32, y * 32);
-				else if (target == 'E')
-					mlx_put_image_to_window(g->mlx, g->win,
-						g->exit.img, x * 32, y * 32);
-				else if (target == 'P')
-					mlx_put_image_to_window(g->mlx, g->win,
-						g->player.img, x * 32, y * 32);
-			}
-			x++;
+			unsigned int color = get_pixel_color(img, j, i);
+			my_pixel_put(&g->canvas, (x * 32) + j, (y * 32) + i, color);
 		}
-		y++;
 	}
 }
 
 void	draw_map(t_game *g)
 {
-	draw_floor(g);        // layer 0
-	draw_objects(g, '1'); // layer 1: walls
-	draw_objects(g, 'C'); // layer 2: collectibles
-	draw_objects(g, 'E'); // layer 3: exit
-	draw_objects(g, 'P'); // layer 4: player (TOP)
+	for (int y = 0; g->map[y]; y++)
+	{
+		for (int x = 0; g->map[y][x]; x++)
+		{
+			// Always draw floor first as background
+			draw_tile(g, &g->floor, x, y);
+			if (g->map[y][x] == '1')
+				draw_tile(g, &g->wall, x, y);
+			else if (g->map[y][x] == 'C')
+				draw_tile(g, &g->collect, x, y);
+			else if (g->map[y][x] == 'E')
+				draw_tile(g, &g->exit, x, y);
+			else if (g->map[y][x] == 'P')
+				draw_tile(g, &g->player, x, y);
+		}
+	}
+	mlx_put_image_to_window(g->mlx, g->win, g->canvas.ptr, 0, 0);
 }
