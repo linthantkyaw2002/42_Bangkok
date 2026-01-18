@@ -26,23 +26,28 @@ static void	render_move_count(t_game *g)
 	}
 }
 
-static unsigned int	get_pixel_color(t_img *img, int x, int y)
+/*(img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8))))
+from this you get start point
+and type casting is how many bytes to read*/
+static unsigned int	get_pixel_color(t_img *img, int j, int i)
 {
-	return (*(unsigned int *)(img->addr + (y * img->line_length + x
+	return (*(unsigned int *)(img->addr + (i * img->line_length + j
 			* (img->bits_per_pixel / 8))));
 }
 
-static void	my_pixel_put(t_img *canvas, int x, int y, int color)
+//dst is destination address in canvas where we want to put the pixel color
+static void	my_pixel_put(t_img *canvas, int j, int i, int color)
 {
 	char	*dst;
 
 	if (color == (int)0xFF000000 || color == (int)0x000000)
 		return ;
-	dst = canvas->addr + (y * canvas->line_length + x * (canvas->bits_per_pixel
+	dst = canvas->addr + (i * canvas->line_length + j * (canvas->bits_per_pixel
 				/ 8));
 	*(unsigned int *)dst = color;
 }
 
+//x and y are tile coordinates, not pixel coordinates
 static void	draw_tile(t_game *g, t_img *img, int x, int y)
 {
 	int	i;

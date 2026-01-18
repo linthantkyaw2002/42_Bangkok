@@ -13,6 +13,7 @@
 #include "libft.h"
 #include "so_long.h"
 
+// Initialize game state: find player position, collect count, move count
 void	init_game_state(t_game *g)
 {
 	int	x;
@@ -39,7 +40,7 @@ void	init_game_state(t_game *g)
 	}
 }
 
-/* One central error exit for the whole project */
+/* error exit for the whole project */
 void	error_exit(char *message)
 {
 	if (message)
@@ -68,7 +69,7 @@ int	get_map_width(char **map)
 	return (ft_strlen(map[0]));
 }
 
-/* Centralized map copying for flood_fill or other logic */
+/* copying for flood_fill or other logic */
 char	**copy_map(char **map)
 {
 	char	**copy;

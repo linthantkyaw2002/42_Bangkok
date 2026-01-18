@@ -14,6 +14,7 @@
 #include "libft.h"
 #include "so_long.h"
 
+//if length of 1st line != length of any other line -> error
 static void	check_rectangular(char **map)
 {
 	int	i;
@@ -29,6 +30,8 @@ static void	check_rectangular(char **map)
 	}
 }
 
+/*map is now rectangular, 1st row(0,0-w), 
+last row (h-1,0-w), 1st col(0-h, 0), last col(0-h,w-1) must be '1'*/
 static void	check_walls(char **map)
 {
 	int	i;
@@ -55,6 +58,7 @@ static void	check_walls(char **map)
 	}
 }
 
+//how many P, E, C? in map
 static void	count_element(char c, int *p, int *e, int *c_count)
 {
 	if (c == 'P')
