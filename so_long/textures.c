@@ -1,5 +1,17 @@
-#include "so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/18 22:48:44 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/01/18 22:48:44 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
+#include "so_long.h"
 
 static void	load_img(t_game *g, t_img *img, char *path)
 {
@@ -10,7 +22,7 @@ static void	load_img(t_game *g, t_img *img, char *path)
 		exit(1);
 	}
 	img->addr = mlx_get_data_addr(img->ptr, &img->bits_per_pixel,
-                                  &img->line_length, &img->endian);
+			&img->line_length, &img->endian);
 }
 
 void	load_textures(t_game *g)
@@ -20,9 +32,7 @@ void	load_textures(t_game *g)
 	load_img(g, &g->collect, "textures/collect.xpm");
 	load_img(g, &g->exit, "textures/exit.xpm");
 	load_img(g, &g->player, "textures/player.xpm");
-
-    // Create the blank canvas the size of the whole map
 	g->canvas.ptr = mlx_new_image(g->mlx, g->width, g->height);
 	g->canvas.addr = mlx_get_data_addr(g->canvas.ptr, &g->canvas.bits_per_pixel,
-                                       &g->canvas.line_length, &g->canvas.endian);
+			&g->canvas.line_length, &g->canvas.endian);
 }

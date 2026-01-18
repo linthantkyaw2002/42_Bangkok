@@ -1,35 +1,17 @@
-#include "so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/18 22:38:02 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/01/18 22:38:02 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
-
-void	init_game_state(t_game *g)
-{
-	int	x;
-	int	y;
-
-	g->collect_count = 0;
-	g->moves = 0;
-	y = 0;
-	while (g->map[y])
-	{
-		x = 0;
-		while (g->map[y][x])
-		{
-			if (g->map[y][x] == 'P')
-			{
-				g->player_x = x;
-				g->player_y = y;
-			}
-			else if (g->map[y][x] == 'C')
-				g->collect_count++;
-			x++;
-		}
-		y++;
-	}
-}
-
 #include "so_long.h"
-#include "libft.h"
-#include <mlx.h>
 
 static void	render_move_count(t_game *g)
 {
@@ -46,8 +28,8 @@ static void	render_move_count(t_game *g)
 
 static unsigned int	get_pixel_color(t_img *img, int x, int y)
 {
-	return (*(unsigned int *)(img->addr + (y * img->line_length + 
-			x * (img->bits_per_pixel / 8))));
+	return (*(unsigned int *)(img->addr + (y * img->line_length + x
+			* (img->bits_per_pixel / 8))));
 }
 
 static void	my_pixel_put(t_img *canvas, int x, int y, int color)
@@ -56,7 +38,8 @@ static void	my_pixel_put(t_img *canvas, int x, int y, int color)
 
 	if (color == (int)0xFF000000 || color == (int)0x000000)
 		return ;
-	dst = canvas->addr + (y * canvas->line_length + x * (canvas->bits_per_pixel / 8));
+	dst = canvas->addr + (y * canvas->line_length + x * (canvas->bits_per_pixel
+				/ 8));
 	*(unsigned int *)dst = color;
 }
 
@@ -71,7 +54,7 @@ static void	draw_tile(t_game *g, t_img *img, int x, int y)
 		j = 0;
 		while (j < 32)
 		{
-			my_pixel_put(&g->canvas, (x * 32) + j, (y * 32) + i, 
+			my_pixel_put(&g->canvas, (x * 32) + j, (y * 32) + i,
 				get_pixel_color(img, j, i));
 			j++;
 		}

@@ -1,35 +1,17 @@
-#include "so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   flood_fill.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/18 22:38:21 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/01/18 22:38:21 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
-
-/* 1. Static helper functions MUST come first */
-static void	error_exit(void)
-{
-	ft_putendl_fd("Error", 2);
-	exit(1);
-}
-
-static char	**copy_map(char **map)
-{
-	char	**copy;
-	int		i;
-
-	i = 0;
-	while (map[i])
-		i++;
-	copy = malloc(sizeof(char *) * (i + 1));
-	if (!copy)
-		error_exit();
-	i = 0;
-	while (map[i])
-	{
-		copy[i] = ft_strdup(map[i]);
-		if (!copy[i])
-			error_exit();
-		i++;
-	}
-	copy[i] = NULL;
-	return (copy);
-}
+#include "so_long.h"
 
 static void	find_player(char **map, int *x, int *y)
 {
@@ -52,7 +34,7 @@ static void	find_player(char **map, int *x, int *y)
 		}
 		i++;
 	}
-	error_exit();
+	error_exit(NULL);
 }
 
 static int	count_all_collectibles(char **map)
@@ -77,19 +59,19 @@ static int	count_all_collectibles(char **map)
 	return (count);
 }
 
-static void	fill(char **map, int y, int x, int *c, int *e)
+static void	fill(char **map, int y, int x, t_check *check)
 {
 	if (y < 0 || x < 0 || map[y][x] == '1' || map[y][x] == 'V')
 		return ;
 	if (map[y][x] == 'C')
-		(*c)++;
+		check->c_found++;
 	if (map[y][x] == 'E')
-		(*e) = 1;
+		check->e_found = 1;
 	map[y][x] = 'V';
-	fill(map, y + 1, x, c, e);
-	fill(map, y - 1, x, c, e);
-	fill(map, y, x + 1, c, e);
-	fill(map, y, x - 1, c, e);
+	fill(map, y + 1, x, check);
+	fill(map, y - 1, x, check);
+	fill(map, y, x + 1, check);
+	fill(map, y, x - 1, check);
 }
 
 /* 2. Main function goes at the bottom so it "sees" everything above it */
@@ -98,17 +80,16 @@ void	flood_fill(char **map)
 	char	**copy;
 	int		x;
 	int		y;
-	int		c_found;
-	int		e_found;
 	int		total_c;
+	t_check	check;
 
 	total_c = count_all_collectibles(map);
 	copy = copy_map(map);
 	find_player(copy, &x, &y);
-	c_found = 0;
-	e_found = 0;
-	fill(copy, y, x, &c_found, &e_found);
+	check.c_found = 0;
+	check.e_found = 0;
+	fill(copy, y, x, &check);
 	free_map(copy);
-	if (e_found == 0 || c_found != total_c)
-		error_exit();
+	if (check.e_found == 0 || check.c_found != total_c)
+		error_exit("Error: Invalid map pathing");
 }

@@ -1,6 +1,18 @@
-#include "so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   map.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/18 22:46:14 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/01/18 22:46:14 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line/get_next_line.h"
 #include "libft.h"
+#include "so_long.h"
 
 static int	file_height(char *path)
 {
@@ -23,11 +35,26 @@ static int	file_height(char *path)
 	return (height);
 }
 
+/* Helper to read lines from FD into the map array */
+static void	read_map_lines(int fd, char **map, int height)
+{
+	int	i;
+
+	i = 0;
+	while (i < height)
+	{
+		map[i] = get_next_line(fd);
+		if (map[i])
+			map[i] = ft_strtrim(map[i], "\n\r");
+		i++;
+	}
+	map[i] = NULL;
+}
+
 char	**load_map(char *path)
 {
 	char	**map;
 	int		fd;
-	int		i;
 	int		height;
 
 	height = file_height(path);
@@ -42,16 +69,7 @@ char	**load_map(char *path)
 		free(map);
 		return (NULL);
 	}
-	i = 0;
-	while (i < height)
-	{
-		map[i] = get_next_line(fd);
-		if (!map[i])
-			break ;
-		map[i] = ft_strtrim(map[i], "\n\r");
-		i++;
-	}
-	map[i] = NULL;
+	read_map_lines(fd, map, height);
 	close(fd);
 	return (map);
 }
@@ -64,9 +82,6 @@ void	free_map(char **map)
 		return ;
 	i = 0;
 	while (map[i])
-	{
-		free(map[i]);
-		i++;
-	}
+		free(map[i++]);
 	free(map);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   move.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/18 22:47:35 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/01/18 22:47:35 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "so_long.h"
 
@@ -38,27 +50,27 @@ void	execute_move(t_game *g, int new_x, int new_y)
 	if (target == 'C')
 	{
 		g->collect_count--;
-		g->map[new_y][new_x] = '0'; // Turn collected coin into floor
+		g->map[new_y][new_x] = '0';
 	}
 	g->player_x = new_x;
 	g->player_y = new_y;
 	g->moves++;
-	ft_putnbr_fd(g->moves, 1); // Requirement for 42 shell output
+	ft_putnbr_fd(g->moves, 1);
 	ft_putchar_fd('\n', 1);
 	draw_map(g);
 }
 
 int	handle_keypress(int keysym, t_game *game)
 {
-	if (keysym == 65307) // ESC Key
+	if (keysym == 65307)
 		close_game(game);
-	if (keysym == 119) // W
+	if (keysym == 119)
 		execute_move(game, game->player_x, game->player_y - 1);
-	if (keysym == 115) // S
+	if (keysym == 115)
 		execute_move(game, game->player_x, game->player_y + 1);
-	if (keysym == 97) // A
+	if (keysym == 97)
 		execute_move(game, game->player_x - 1, game->player_y);
-	if (keysym == 100) // D
+	if (keysym == 100)
 		execute_move(game, game->player_x + 1, game->player_y);
 	return (0);
 }
