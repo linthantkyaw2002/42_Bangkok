@@ -14,7 +14,7 @@
 #include "so_long.h"
 
 //mlx_get_data set bits_per_pixel, line_length, endian and give back addr
-static void	load_img(t_game *g, t_img *img, char *path)
+void	load_img(t_game *g, t_img *img, char *path)
 {
 	img->ptr = mlx_xpm_file_to_image(g->mlx, path, &img->w, &img->h);
 	if (!img->ptr)

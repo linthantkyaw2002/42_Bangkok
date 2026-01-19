@@ -13,6 +13,33 @@
 #include "libft.h"
 #include "so_long.h"
 
+int	close_game(t_game *game)
+{
+	if (game->floor.ptr)
+		mlx_destroy_image(game->mlx, game->floor.ptr);
+	if (game->wall.ptr)
+		mlx_destroy_image(game->mlx, game->wall.ptr);
+	if (game->collect.ptr)
+		mlx_destroy_image(game->mlx, game->collect.ptr);
+	if (game->exit.ptr)
+		mlx_destroy_image(game->mlx, game->exit.ptr);
+	if (game->player.ptr)
+		mlx_destroy_image(game->mlx, game->player.ptr);
+	if (game->canvas.ptr)
+		mlx_destroy_image(game->mlx, game->canvas.ptr);
+	if (game->win)
+		mlx_destroy_window(game->mlx, game->win);
+	if (game->mlx)
+	{
+		mlx_destroy_display(game->mlx);
+		free(game->mlx);
+	}
+	if (game->map)
+		free_map(game->map);
+	exit(0);
+	return (0);
+}
+
 static void	success_exit(t_game *g, int x, int y)
 {
 	g->player_x = x;

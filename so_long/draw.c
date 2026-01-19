@@ -48,11 +48,13 @@ static void	my_pixel_put(t_img *canvas, int j, int i, int color)
 }
 
 //x and y are tile coordinates, not pixel coordinates
-static void	draw_tile(t_game *g, t_img *img, int x, int y)
+void	draw_tile(t_game *g, t_img *img, int x, int y)
 {
 	int	i;
 	int	j;
 
+	if (!img || !img->ptr) // Defensive check
+		return ;
 	i = 0;
 	while (i < 32)
 	{

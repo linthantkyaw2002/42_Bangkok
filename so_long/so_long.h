@@ -20,9 +20,9 @@
 
 typedef struct s_check
 {
-	int	c_found;
-	int	e_found;
-}	t_check;
+	int		c_found;
+	int		e_found;
+}			t_check;
 
 typedef struct s_img
 {
@@ -46,11 +46,16 @@ typedef struct s_game
 	int		player_y;
 	int		collect_count;
 	int		moves;
+	int		frame;
+	int		enemy_dir;
+	char    **tile_map;    // Shadow map for hidden items
+	int     is_game_over;  // 0=Play, 1=Win, 2=Lose
 	t_img	floor;
 	t_img	wall;
 	t_img	collect;
 	t_img	exit;
 	t_img	player;
+	t_img	enemy;
 	t_img	canvas;
 }			t_game;
 
@@ -67,5 +72,12 @@ void		init_game_state(t_game *game);
 void		load_textures(t_game *game);
 void		draw_map(t_game *game);
 int			close_game(t_game *game);
+void		load_img(t_game *g, t_img *img, char *path);
+void		check_rectangular(char **map);
+void		check_walls(char **map);
+void		check_elements(char **map);
+void		validate_map(char **map);
+void		execute_move(t_game *g, int new_x, int new_y);
+void		draw_tile(t_game *g, t_img *img, int x, int y);
 
 #endif
