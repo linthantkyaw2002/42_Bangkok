@@ -13,7 +13,6 @@
 #include "libft.h"
 #include "so_long.h"
 
-//just indexes of p in 2d array
 static void	find_player(char **map, int *x, int *y)
 {
 	int	i;
@@ -38,7 +37,6 @@ static void	find_player(char **map, int *x, int *y)
 	error_exit(NULL);
 }
 
-//count all collectibles on the map by 2d array
 static int	count_all_collectibles(char **map)
 {
 	int	i;
@@ -61,7 +59,6 @@ static int	count_all_collectibles(char **map)
 	return (count);
 }
 
-//flood fill algorithm to mark reachable areas, c & e are counted on the way
 static void	fill(char **map, int y, int x, t_check *check)
 {
 	if (y < 0 || x < 0 || map[y][x] == '1' || map[y][x] == 'V')
@@ -94,8 +91,5 @@ void	flood_fill(char **map)
 	fill(copy, y, x, &check);
 	free_map(copy);
 	if (check.e_found == 0 || check.c_found != total_c)
-	{
-		free_map(map);
 		error_exit("Error: Invalid map pathing");
-	}
 }

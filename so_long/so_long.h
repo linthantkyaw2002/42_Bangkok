@@ -59,15 +59,19 @@ typedef struct s_game
 	t_img	canvas;
 }			t_game;
 
+// New Prototypes
 void		error_exit(char *message);
 int			get_map_height(char **map);
 int			get_map_width(char **map);
 char		**copy_map(char **map);
 int			handle_keypress(int keysym, t_game *game);
+void		init_player_pos(t_game *game);
 char		**load_map(char *path);
 void		free_map(char **map);
 void		validate_map(char **map);
 void		flood_fill(char **map);
+int			map_width(char **map);
+int			map_height_arr(char **map);
 void		init_game_state(t_game *game);
 void		load_textures(t_game *game);
 void		draw_map(t_game *game);

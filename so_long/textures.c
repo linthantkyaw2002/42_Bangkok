@@ -13,8 +13,12 @@
 #include "libft.h"
 #include "so_long.h"
 
+<<<<<<< HEAD
 //mlx_get_data set bits_per_pixel, line_length, endian and give back addr
 void	load_img(t_game *g, t_img *img, char *path)
+=======
+static void	load_img(t_game *g, t_img *img, char *path)
+>>>>>>> parent of 96dfda3 (Memory Leak, error check ready for Mandatory)
 {
 	img->ptr = mlx_xpm_file_to_image(g->mlx, path, &img->w, &img->h);
 	if (!img->ptr)
@@ -26,7 +30,6 @@ void	load_img(t_game *g, t_img *img, char *path)
 			&img->line_length, &img->endian);
 }
 
-//canvas is blank image which is the same size as window
 void	load_textures(t_game *g)
 {
 	load_img(g, &g->floor, "textures/floor.xpm");

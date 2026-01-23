@@ -38,24 +38,17 @@ static int	file_height(char *path)
 /* Helper to read lines from FD into the map array */
 static void	read_map_lines(int fd, char **map, int height)
 {
-	int		i;
-	char	*temp;
+	int	i;
 
 	i = 0;
 	while (i < height)
 	{
-		temp = get_next_line(fd);
-		if (temp)
-		{
-			map[i] = ft_strtrim(temp, "\n\r");
-			free(temp);
-		}
+		map[i] = get_next_line(fd);
+		if (map[i])
+			map[i] = ft_strtrim(map[i], "\n\r");
 		i++;
 	}
 	map[i] = NULL;
-	temp = get_next_line(fd);
-	if (temp)
-		free(temp);
 }
 
 char	**load_map(char *path)
@@ -89,10 +82,6 @@ void	free_map(char **map)
 		return ;
 	i = 0;
 	while (map[i])
-	{
-		free(map[i]);
-		map[i] = NULL;
-		i++;
-	}
+		free(map[i++]);
 	free(map);
 }

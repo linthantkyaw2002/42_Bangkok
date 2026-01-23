@@ -13,6 +13,7 @@
 #include "libft.h"
 #include "so_long.h"
 
+<<<<<<< HEAD
 int	close_game(t_game *game)
 {
 	if (game->floor.ptr)
@@ -41,15 +42,31 @@ int	close_game(t_game *game)
 }
 
 static void	success_exit(t_game *g, int x, int y)
+=======
+void	init_player_pos(t_game *game)
+>>>>>>> parent of 96dfda3 (Memory Leak, error check ready for Mandatory)
 {
-	g->player_x = x;
-	g->player_y = y;
-	draw_map(g);
-	mlx_string_put(g->mlx, g->win, g->width / 2 - 30, g->height / 2,
-		0x00FF00, "YOU WIN!");
-	mlx_do_sync(g->mlx);
-	usleep(3000000);
-	close_game(g);
+	int	x;
+	int	y;
+
+	y = 0;
+	game->collect_count = 0;
+	while (game->map[y])
+	{
+		x = 0;
+		while (game->map[y][x])
+		{
+			if (game->map[y][x] == 'P')
+			{
+				game->player_x = x;
+				game->player_y = y;
+			}
+			if (game->map[y][x] == 'C')
+				game->collect_count++;
+			x++;
+		}
+		y++;
+	}
 }
 
 void	execute_move(t_game *g, int new_x, int new_y)
@@ -60,10 +77,7 @@ void	execute_move(t_game *g, int new_x, int new_y)
 	if (target == '1')
 		return ;
 	if (target == 'E' && g->collect_count == 0)
-	{
-		success_exit(g, new_x, new_y);
-		return ;
-	}
+		close_game(g);
 	if (target == 'C')
 	{
 		g->collect_count--;
@@ -81,13 +95,13 @@ int	handle_keypress(int keysym, t_game *game)
 {
 	if (keysym == 65307)
 		close_game(game);
-	if (keysym == 119 || keysym == 65362)
+	if (keysym == 119)
 		execute_move(game, game->player_x, game->player_y - 1);
-	if (keysym == 115 || keysym == 65364)
+	if (keysym == 115)
 		execute_move(game, game->player_x, game->player_y + 1);
-	if (keysym == 97 || keysym == 65361)
+	if (keysym == 97)
 		execute_move(game, game->player_x - 1, game->player_y);
-	if (keysym == 100 || keysym == 65363)
+	if (keysym == 100)
 		execute_move(game, game->player_x + 1, game->player_y);
 	return (0);
 }

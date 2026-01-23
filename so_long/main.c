@@ -14,6 +14,17 @@
 #include <X11/X.h>
 #include <mlx.h>
 
+<<<<<<< HEAD
+=======
+int	close_game(t_game *game)
+{
+	free_map(game->map);
+	mlx_destroy_window(game->mlx, game->win);
+	exit(0);
+	return (0);
+}
+
+>>>>>>> parent of 96dfda3 (Memory Leak, error check ready for Mandatory)
 int	main(int ac, char **av)
 {
 	t_game	game;
