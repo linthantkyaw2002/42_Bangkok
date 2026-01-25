@@ -48,7 +48,7 @@ static void	success_exit(t_game *g, int x, int y)
 	mlx_string_put(g->mlx, g->win, g->width / 2 - 30, g->height / 2,
 		0x00FF00, "YOU WIN!");
 	mlx_do_sync(g->mlx);
-	usleep(3000000);
+	usleep(2000000);
 	close_game(g);
 }
 

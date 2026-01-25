@@ -25,7 +25,7 @@ void	check_rectangular(char **map)
 	while (map[i])
 	{
 		if ((int)ft_strlen(map[i]) != len)
-			error_exit(NULL);
+			error_exit("Error: Map is not rectangular");
 		i++;
 	}
 }
@@ -44,16 +44,16 @@ void	check_walls(char **map)
 	j = 0;
 	while (j < w)
 		if (map[0][j++] != '1')
-			error_exit(NULL);
+			error_exit("Error: Map is not enclosed by walls");
 	j = 0;
 	while (j < w)
 		if (map[h - 1][j++] != '1')
-			error_exit(NULL);
+			error_exit("Error: Map is not enclosed by walls");
 	i = 0;
 	while (i < h)
 	{
 		if (map[i][0] != '1' || map[i][w - 1] != '1')
-			error_exit(NULL);
+			error_exit("Error: Map is not enclosed by walls");
 		i++;
 	}
 }

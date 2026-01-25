@@ -13,7 +13,7 @@
 #include "libft.h"
 #include "so_long.h"
 
-//mlx_get_data set bits_per_pixel, line_length, endian and give back addr
+// mlx_get_data set bits_per_pixel, line_length, endian and give back addr
 void	load_img(t_game *g, t_img *img, char *path)
 {
 	img->ptr = mlx_xpm_file_to_image(g->mlx, path, &img->w, &img->h);
@@ -26,7 +26,7 @@ void	load_img(t_game *g, t_img *img, char *path)
 			&img->line_length, &img->endian);
 }
 
-//canvas is blank image which is the same size as window
+// canvas is blank image which is the same size as window
 void	load_textures(t_game *g)
 {
 	load_img(g, &g->floor, "textures/floor.xpm");
@@ -35,6 +35,8 @@ void	load_textures(t_game *g)
 	load_img(g, &g->exit, "textures/exit.xpm");
 	load_img(g, &g->player, "textures/player.xpm");
 	g->canvas.ptr = mlx_new_image(g->mlx, g->width, g->height);
+	if (!g->canvas.ptr)
+		error_exit("Error: Failed to create canvas");
 	g->canvas.addr = mlx_get_data_addr(g->canvas.ptr, &g->canvas.bits_per_pixel,
 			&g->canvas.line_length, &g->canvas.endian);
 }

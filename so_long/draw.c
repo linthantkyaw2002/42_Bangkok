@@ -35,25 +35,25 @@ static unsigned int	get_pixel_color(t_img *img, int j, int i)
 			* (img->bits_per_pixel / 8))));
 }
 
-//dst is destination address in canvas where we want to put the pixel color
+// dst is destination address in canvas where we want to put the pixel color
 static void	my_pixel_put(t_img *canvas, int j, int i, int color)
 {
 	char	*dst;
 
-	if (color == (int)0xFF000000 || color == (int)0x000000)
+	if (color == (int)0xFF000000)
 		return ;
 	dst = canvas->addr + (i * canvas->line_length + j * (canvas->bits_per_pixel
 				/ 8));
 	*(unsigned int *)dst = color;
 }
 
-//x and y are tile coordinates, not pixel coordinates
+// x and y are tile coordinates, not pixel coordinates
 void	draw_tile(t_game *g, t_img *img, int x, int y)
 {
 	int	i;
 	int	j;
 
-	if (!img || !img->ptr) // Defensive check
+	if (!img || !img->ptr)
 		return ;
 	i = 0;
 	while (i < 32)

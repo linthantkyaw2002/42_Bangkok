@@ -1,20 +1,18 @@
 /* ************************************************************************** */
-/* */
-/* :::      ::::::::   */
-/* animation_utils_bonus.c                            :+:      :+:    :+:   */
-/* +:+ +:+         +:+     */
-/* By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
-/* +#+#+#+#+#+   +#+           */
-/* Created: 2026/01/24 00:50:00 by lkyaw             #+#    #+#             */
-/* Updated: 2026/01/24 00:50:00 by lkyaw            ###   ########.fr       */
-/* */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   animation_utils_bonus.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/25 15:24:42 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/01/25 15:24:42 by lkyaw            ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long_bonus.h"
 
-/* ** Creates an animation object from an array of XPM paths.
-** Reuses your mandatory load_img to set up t_img textures.
-*/
+/*it freezes when condition are not met*/
 void	update_exit_anim(t_game *g)
 {
 	t_anim	*a;
@@ -30,6 +28,19 @@ void	update_exit_anim(t_game *g)
 		a->current++;
 	else if (!g->exit_open && a->current > 0)
 		a->current--;
+}
+
+/* frame[0] is shown before this function is called */
+void	update_anim(t_anim *anim)
+{
+	if (!anim)
+		return ;
+	anim->tick++;
+	if (anim->tick >= anim->speed)
+	{
+		anim->current = (anim->current + 1) % anim->frame_count;
+		anim->tick = 0;
+	}
 }
 
 t_anim	*anim_create(t_game *g, char **paths, int speed)
@@ -58,22 +69,6 @@ t_anim	*anim_create(t_game *g, char **paths, int speed)
 	return (anim);
 }
 
-/* ** Increments the animation frame based on the 'speed' (tick) value.
-*/
-void	update_anim(t_anim *anim)
-{
-	if (!anim)
-		return ;
-	anim->tick++;
-	if (anim->tick >= anim->speed)
-	{
-		anim->current = (anim->current + 1) % anim->frame_count;
-		anim->tick = 0;
-	}
-}
-
-/* ** Properly destroys all MLX images in the animation before freeing.
-*/
 void	free_anim(t_game *g, t_anim *anim)
 {
 	int	i;
@@ -89,4 +84,11 @@ void	free_anim(t_game *g, t_anim *anim)
 	}
 	free(anim->frames);
 	free(anim);
+}
+
+int	ft_abs(int n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
 }

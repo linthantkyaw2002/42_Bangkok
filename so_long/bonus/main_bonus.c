@@ -1,53 +1,94 @@
 /* ************************************************************************** */
-/* */
-/* :::      ::::::::   */
-/* main_bonus.c                                       :+:      :+:    :+:   */
-/* +:+ +:+         +:+     */
-/* By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
-/* +#+#+#+#+#+   +#+           */
-/* Created: 2026/01/24 00:45:00 by lkyaw             #+#    #+#             */
-/* Updated: 2026/01/24 00:45:00 by lkyaw            ###   ########.fr       */
-/* */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/01/25 15:23:43 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/01/25 15:23:43 by lkyaw            ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long_bonus.h"
 
-/* ** Define the asset paths for the collectible animation.
-** This uses your NULL-terminated string array logic.
-*/
-static char	*g_collect_paths[] = {"textures/collect/coin0.xpm",
-		"textures/collect/coin1.xpm", "textures/collect/coin2.xpm",
-		"textures/collect/coin3.xpm", "textures/collect/coin4.xpm", NULL};
+static void	init_enemy_anim(t_game *g)
+{
+	char	*el[8];
+	char	*er[8];
 
-static char	*g_enemy_l_paths[] = {"textures/enemy/enemyL0.xpm",
-		"textures/enemy/enemyL1.xpm", "textures/enemy/enemyL2.xpm",
-		"textures/enemy/enemyL3.xpm", "textures/enemy/enemyL4.xpm",
-		"textures/enemy/enemyL5.xpm", "textures/enemy/enemyL6.xpm", NULL};
-static char	*g_enemy_r_paths[] = {"textures/enemy/enemyR0.xpm",
-		"textures/enemy/enemyR1.xpm", "textures/enemy/enemyR2.xpm",
-		"textures/enemy/enemyR3.xpm", "textures/enemy/enemyR4.xpm",
-		"textures/enemy/enemyR5.xpm", "textures/enemy/enemyR6.xpm", NULL};
-static char	*g_p_l_paths[] = {"textures/player/playerL0.xpm",
-		"textures/player/playerL1.xpm", "textures/player/playerL2.xpm",
-		"textures/player/playerL3.xpm", "textures/player/playerL4.xpm",
-		"textures/player/playerL5.xpm", NULL};
-static char	*g_p_r_paths[] = {"textures/player/playerR0.xpm",
-		"textures/player/playerR1.xpm", "textures/player/playerR2.xpm",
-		"textures/player/playerR3.xpm", "textures/player/playerR4.xpm",
-		"textures/player/playerR5.xpm", NULL};
-static char	*g_exit_paths[] = {"textures/exit/exit0.xpm",
-		"textures/exit/exit1.xpm", "textures/exit/exit2.xpm", NULL};
-/* ** Creates the shadow map (tile_map) to store what's under moving entities.
-** Replaces P, X, and H with '0' to keep the floor clean.
-*/static char	**init_tile_map(char **map)
+	el[0] = "textures/enemy/enemyL0.xpm";
+	el[1] = "textures/enemy/enemyL1.xpm";
+	el[2] = "textures/enemy/enemyL2.xpm";
+	el[3] = "textures/enemy/enemyL3.xpm";
+	el[4] = "textures/enemy/enemyL4.xpm";
+	el[5] = "textures/enemy/enemyL5.xpm";
+	el[6] = "textures/enemy/enemyL6.xpm";
+	el[7] = NULL;
+	er[0] = "textures/enemy/enemyR0.xpm";
+	er[1] = "textures/enemy/enemyR1.xpm";
+	er[2] = "textures/enemy/enemyR2.xpm";
+	er[3] = "textures/enemy/enemyR3.xpm";
+	er[4] = "textures/enemy/enemyR4.xpm";
+	er[5] = "textures/enemy/enemyR5.xpm";
+	er[6] = "textures/enemy/enemyR6.xpm";
+	er[7] = NULL;
+	g->enemy_l = anim_create(g, el, 10);
+	g->enemy_r = anim_create(g, er, 10);
+}
+
+static void	init_player_anim(t_game *g)
+{
+	char	*pl[7];
+	char	*pr[7];
+
+	pl[0] = "textures/player/playerL0.xpm";
+	pl[1] = "textures/player/playerL1.xpm";
+	pl[2] = "textures/player/playerL2.xpm";
+	pl[3] = "textures/player/playerL3.xpm";
+	pl[4] = "textures/player/playerL4.xpm";
+	pl[5] = "textures/player/playerL5.xpm";
+	pl[6] = NULL;
+	pr[0] = "textures/player/playerR0.xpm";
+	pr[1] = "textures/player/playerR1.xpm";
+	pr[2] = "textures/player/playerR2.xpm";
+	pr[3] = "textures/player/playerR3.xpm";
+	pr[4] = "textures/player/playerR4.xpm";
+	pr[5] = "textures/player/playerR5.xpm";
+	pr[6] = NULL;
+	g->player_l = anim_create(g, pl, 12);
+	g->player_r = anim_create(g, pr, 12);
+}
+
+static void	init_animations_bonus(t_game *g)
+{
+	char	*c_p[6];
+	char	*ex_p[4];
+
+	c_p[0] = "textures/collect/coin0.xpm";
+	c_p[1] = "textures/collect/coin1.xpm";
+	c_p[2] = "textures/collect/coin2.xpm";
+	c_p[3] = "textures/collect/coin3.xpm";
+	c_p[4] = "textures/collect/coin4.xpm";
+	c_p[5] = NULL;
+	ex_p[0] = "textures/exit/exit0.xpm";
+	ex_p[1] = "textures/exit/exit1.xpm";
+	ex_p[2] = "textures/exit/exit2.xpm";
+	ex_p[3] = NULL;
+	g->anim_collect = anim_create(g, c_p, COLLECT_SPEED);
+	g->exit_anim = anim_create(g, ex_p, 15);
+	init_enemy_anim(g);
+	init_player_anim(g);
+}
+
+/* make a copy of map without enemies and player */
+char	**init_tile_map(char **map)
 {
 	int		i;
 	int		j;
 	char	**tile_map;
 
-	i = 0;
-	while (map[i])
-		i++;
+	i = get_map_height(map);
 	tile_map = malloc(sizeof(char *) * (i + 1));
 	if (!tile_map)
 		return (NULL);
@@ -58,7 +99,8 @@ static char	*g_exit_paths[] = {"textures/exit/exit0.xpm",
 		j = -1;
 		while (tile_map[i][++j])
 		{
-			if (tile_map[i][j] == 'X' || tile_map[i][j] == 'H' || tile_map[i][j] == 'P')
+			if (tile_map[i][j] == 'X' || tile_map[i][j] == 'H'
+				|| tile_map[i][j] == 'P')
 				tile_map[i][j] = '0';
 		}
 	}
@@ -73,6 +115,7 @@ int	main(int ac, char **av)
 	if (ac != 2)
 		return (1);
 	ft_memset(&g, 0, sizeof(t_game));
+	g.map_path = av[1];
 	g.map = load_map(av[1]);
 	if (!g.map)
 		return (1);
@@ -82,17 +125,12 @@ int	main(int ac, char **av)
 	g.height = get_map_height(g.map) * 32;
 	g.mlx = mlx_init();
 	g.win = mlx_new_window(g.mlx, g.width, g.height, "so_long Bonus");
-	load_textures(&g);
-	g.anim_collect = anim_create(&g, g_collect_paths, COLLECT_SPEED);
-	g.player_l = anim_create(&g, g_p_l_paths, 12);
-	g.player_r = anim_create(&g, g_p_r_paths, 12);
-	g.enemy_l = anim_create(&g, g_enemy_l_paths, 10);
-	g.enemy_r = anim_create(&g, g_enemy_r_paths, 10);
-	g.exit_anim = anim_create(&g, g_exit_paths, 15);
+	load_textures_bonus(&g);
+	init_animations_bonus(&g);
 	g.player_dir = 1;
 	init_game_state(&g);
 	mlx_hook(g.win, 2, 1L << 0, (int (*)())handle_keypress_bonus, &g);
-	mlx_hook(g.win, 17, 0, close_game, &g);
+	mlx_hook(g.win, 17, 0, close_game_bonus, &g);
 	mlx_loop_hook(g.mlx, animation_loop_bonus, &g);
 	mlx_loop(g.mlx);
 	return (0);
