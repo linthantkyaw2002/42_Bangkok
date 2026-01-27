@@ -5,23 +5,26 @@ NAME        = so_long
 NAME_BONUS  = so_long_bonus
 
 # ======================
-# Compiler
+# Compiler & Flags
 # ======================
 CC          = cc
-CFLAGS      = -Wall -Wextra -Werror $(MLX_INC)
+# Added -Ilibft so you can #include "libft.h" without paths
+CFLAGS      = -Wall -Wextra -Werror $(MLX_INC) -ILibft
 
 # ======================
-# MLX
+# Paths & Libraries
 # ======================
 MLX_DIR     = minilibx-linux
 MLX_LIB     = $(MLX_DIR)/libmlx.a
 MLX_FLAGS   = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
-MLX_INC     = -Iminilibx-linux
+MLX_INC     = -I$(MLX_DIR)
+
+LIBFT_DIR   = Libft
+LIBFT       = $(LIBFT_DIR)/libft.a
 
 # ======================
 # Sources
 # ======================
-# Common files used by both mandatory and bonus
 COMMON_SRCS = map.c \
               map_validation.c \
               flood_fill.c \
@@ -33,42 +36,40 @@ COMMON_SRCS = map.c \
               get_next_line/get_next_line_utils.c
 
 MANDATORY_SRCS = main.c $(COMMON_SRCS)
-# Add your future bonus .c files here
-BONUS_SRCS = bonus/main_bonus.c \
-             bonus/map_validation_bonus.c \
-             bonus/draw_bonus.c \
-			 bonus/animation_bonus.c \
-			 bonus/animation_utils_bonus.c \
-			 bonus/handle_keypress_bonus.c \
-             $(COMMON_SRCS)
+BONUS_SRCS     = bonus/main_bonus.c \
+                 bonus/map_validation_bonus.c \
+                 bonus/draw_bonus.c \
+                 bonus/animation_bonus.c \
+                 bonus/animation_utils_bonus.c \
+                 bonus/handle_keypress_bonus.c \
+                 $(COMMON_SRCS)
 
 OBJS           = $(MANDATORY_SRCS:.c=.o)
 OBJS_BONUS     = $(BONUS_SRCS:.c=.o)
-
-# ======================
-# Libraries
-# ======================
-LIBFT       = libft.a
 
 # ======================
 # Rules
 # ======================
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
+
+$(NAME): $(LIBFT) $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_FLAGS) -o $(NAME)
 
-# Bonus Rule
 bonus: $(NAME_BONUS)
 
-$(NAME_BONUS): $(OBJS_BONUS)
+$(NAME_BONUS): $(LIBFT) $(OBJS_BONUS)
 	$(CC) $(CFLAGS) $(OBJS_BONUS) $(LIBFT) $(MLX_FLAGS) -o $(NAME_BONUS)
 
 clean:
 	rm -f $(OBJS) $(OBJS_BONUS)
+	@make -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -f $(NAME) $(NAME_BONUS)
+	@make -C $(LIBFT_DIR) fclean
 
 re: fclean all
 

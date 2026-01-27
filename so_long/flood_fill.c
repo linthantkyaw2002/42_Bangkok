@@ -35,7 +35,7 @@ static void	find_player(char **map, int *x, int *y)
 		}
 		i++;
 	}
-	error_exit(NULL);
+	error_exit("Error: Player not found");
 }
 
 //count all collectibles on the map by 2d array

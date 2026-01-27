@@ -19,10 +19,10 @@ int	main(int ac, char **av)
 	t_game	game;
 
 	if (ac != 2)
-		return (1);
+		return (error_exit("Error: Invalid number of arguments"), 1);
 	game.map = load_map(av[1]);
 	if (!game.map)
-		return (1);
+		return (error_exit("Error: Could not load map"), 1);
 	validate_map(game.map);
 	flood_fill(game.map);
 	game.width = get_map_width(game.map) * 32;

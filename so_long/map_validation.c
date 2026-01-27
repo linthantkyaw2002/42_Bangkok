@@ -68,7 +68,7 @@ void	count_element(char c, int *p, int *e, int *c_count)
 	else if (c == 'C')
 		(*c_count)++;
 	else if (c != '0' && c != '1')
-		error_exit(NULL);
+		error_exit("Error: Invalid map element");
 }
 
 void	check_elements(char **map)
@@ -94,13 +94,13 @@ void	check_elements(char **map)
 		i++;
 	}
 	if (p != 1 || e != 1 || c < 1)
-		error_exit(NULL);
+		error_exit("Error: Invalid number of map elements");
 }
 
 void	validate_map(char **map)
 {
 	if (!map || !map[0])
-		error_exit(NULL);
+		error_exit("Error: Map is empty");
 	check_rectangular(map);
 	check_walls(map);
 	check_elements(map);
