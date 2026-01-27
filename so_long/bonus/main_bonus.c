@@ -33,8 +33,8 @@ static void	init_enemy_anim(t_game *g)
 	er[5] = "textures/enemy/enemyR5.xpm";
 	er[6] = "textures/enemy/enemyR6.xpm";
 	er[7] = NULL;
-	g->enemy_l = anim_create(g, el, 10);
-	g->enemy_r = anim_create(g, er, 10);
+	g->enemy_l = anim_create(g, el, ENEMY_ANIM_SPEED);
+	g->enemy_r = anim_create(g, er, ENEMY_ANIM_SPEED);
 }
 
 static void	init_player_anim(t_game *g)
@@ -56,8 +56,8 @@ static void	init_player_anim(t_game *g)
 	pr[4] = "textures/player/playerR4.xpm";
 	pr[5] = "textures/player/playerR5.xpm";
 	pr[6] = NULL;
-	g->player_l = anim_create(g, pl, 12);
-	g->player_r = anim_create(g, pr, 12);
+	g->player_l = anim_create(g, pl, PLAYER_ANIM_SPEED);
+	g->player_r = anim_create(g, pr, PLAYER_ANIM_SPEED);
 }
 
 static void	init_animations_bonus(t_game *g)
@@ -76,7 +76,7 @@ static void	init_animations_bonus(t_game *g)
 	ex_p[2] = "textures/exit/exit2.xpm";
 	ex_p[3] = NULL;
 	g->anim_collect = anim_create(g, c_p, COLLECT_SPEED);
-	g->exit_anim = anim_create(g, ex_p, 15);
+	g->exit_anim = anim_create(g, ex_p, COLLECT_SPEED);
 	init_enemy_anim(g);
 	init_player_anim(g);
 }
@@ -113,12 +113,12 @@ int	main(int ac, char **av)
 	t_game	g;
 
 	if (ac != 2)
-		return (1);
+		return (error_exit("Error: Invalid number of arguments"), 1);
 	ft_memset(&g, 0, sizeof(t_game));
 	g.map_path = av[1];
 	g.map = load_map(av[1]);
 	if (!g.map)
-		return (1);
+		return (error_exit("Error: Could not load map"), 1);
 	g.tile_map = init_tile_map(g.map);
 	validate_map_bonus(g.map);
 	g.width = get_map_width(g.map) * 32;

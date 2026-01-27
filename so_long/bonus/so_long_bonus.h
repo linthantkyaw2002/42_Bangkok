@@ -13,13 +13,13 @@
 #ifndef SO_LONG_BONUS_H
 # define SO_LONG_BONUS_H
 
-# include "../libft.h"
 # include "../so_long.h"
+# include "../Libft/libft.h"
 
 # define ENEMY_SPEED 100
-# define PLAYER_ANIM_SPEED 10
-# define ENEMY_ANIM_SPEED 10
-# define COLLECT_SPEED 30
+# define PLAYER_ANIM_SPEED 15
+# define ENEMY_ANIM_SPEED 12
+# define COLLECT_SPEED 40
 
 typedef struct s_anim
 {
