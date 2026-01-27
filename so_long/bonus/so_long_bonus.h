@@ -13,13 +13,13 @@
 #ifndef SO_LONG_BONUS_H
 # define SO_LONG_BONUS_H
 
-# include "../so_long.h"
 # include "../Libft/libft.h"
+# include "../so_long.h"
 
 # define ENEMY_SPEED 100
-# define PLAYER_ANIM_SPEED 15
-# define ENEMY_ANIM_SPEED 12
-# define COLLECT_SPEED 40
+# define PLAYER_ANIM_SPEED 20
+# define ENEMY_ANIM_SPEED 10
+# define COLLECT_SPEED 45
 
 typedef struct s_anim
 {
@@ -46,5 +46,5 @@ int			ft_abs(int n);
 void		load_textures_bonus(t_game *g);
 int			close_game_bonus(t_game *g);
 void		render_text_bonus(t_game *g);
-
+int			get_speed_factor(t_game *g);
 #endif

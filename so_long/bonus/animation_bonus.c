@@ -123,7 +123,7 @@ int	animation_loop_bonus(t_game *g)
 	update_anim(g->enemy_l);
 	update_anim(g->enemy_r);
 	update_exit_anim(g);
-	if (delay++ < ENEMY_SPEED)
+	if (delay++ < ENEMY_SPEED/get_speed_factor(g))
 		return (draw_map_bonus(g), 0);
 	delay = 0;
 	move_enemies_bonus(g);

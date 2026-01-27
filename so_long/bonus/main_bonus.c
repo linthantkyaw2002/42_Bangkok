@@ -33,8 +33,8 @@ static void	init_enemy_anim(t_game *g)
 	er[5] = "textures/enemy/enemyR5.xpm";
 	er[6] = "textures/enemy/enemyR6.xpm";
 	er[7] = NULL;
-	g->enemy_l = anim_create(g, el, ENEMY_ANIM_SPEED);
-	g->enemy_r = anim_create(g, er, ENEMY_ANIM_SPEED);
+	g->enemy_l = anim_create(g, el, ENEMY_ANIM_SPEED/get_speed_factor(g));
+	g->enemy_r = anim_create(g, er, ENEMY_ANIM_SPEED/get_speed_factor(g));
 }
 
 static void	init_player_anim(t_game *g)
@@ -56,8 +56,8 @@ static void	init_player_anim(t_game *g)
 	pr[4] = "textures/player/playerR4.xpm";
 	pr[5] = "textures/player/playerR5.xpm";
 	pr[6] = NULL;
-	g->player_l = anim_create(g, pl, PLAYER_ANIM_SPEED);
-	g->player_r = anim_create(g, pr, PLAYER_ANIM_SPEED);
+	g->player_l = anim_create(g, pl, PLAYER_ANIM_SPEED/get_speed_factor(g));
+	g->player_r = anim_create(g, pr, PLAYER_ANIM_SPEED/get_speed_factor(g));
 }
 
 static void	init_animations_bonus(t_game *g)
@@ -75,8 +75,8 @@ static void	init_animations_bonus(t_game *g)
 	ex_p[1] = "textures/exit/exit1.xpm";
 	ex_p[2] = "textures/exit/exit2.xpm";
 	ex_p[3] = NULL;
-	g->anim_collect = anim_create(g, c_p, COLLECT_SPEED);
-	g->exit_anim = anim_create(g, ex_p, COLLECT_SPEED);
+	g->anim_collect = anim_create(g, c_p, COLLECT_SPEED/get_speed_factor(g));
+	g->exit_anim = anim_create(g, ex_p, COLLECT_SPEED/get_speed_factor(g));
 	init_enemy_anim(g);
 	init_player_anim(g);
 }
