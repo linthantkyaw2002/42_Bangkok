@@ -42,6 +42,7 @@ BONUS_SRCS     = bonus/main_bonus.c \
                  bonus/animation_bonus.c \
                  bonus/animation_utils_bonus.c \
                  bonus/handle_keypress_bonus.c \
+				 bonus/animation_factor.c \
                  $(COMMON_SRCS)
 
 OBJS           = $(MANDATORY_SRCS:.c=.o)
