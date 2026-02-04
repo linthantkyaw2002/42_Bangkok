@@ -61,8 +61,11 @@ static void	handle_files(int ac, char **av, int *i, int *outfile)
 		*i = 2;
 		infile = open(av[1], O_RDONLY);
 		if (infile < 0)
+		{
 			perror(av[1]);
-		else
+			infile = open("/dev/null", O_RDONLY);
+		}
+		if (infile >= 0)
 		{
 			dup2(infile, STDIN_FILENO);
 			close(infile);
@@ -77,8 +80,11 @@ static void	last_process(char *cmd, char **envp, int outfile)
 {
 	if (outfile < 0)
 		exit(1);
-	dup2(outfile, STDOUT_FILENO);
-	close(outfile);
+	if (outfile >= 0)
+	{
+		dup2(outfile, STDOUT_FILENO);
+		close(outfile);
+	}
 	exec_cmd(cmd, envp);
 }
 
