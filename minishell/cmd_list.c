@@ -1,3 +1,5 @@
+#include "minishell.h"
+
 t_cmd	*new_cmd(void)
 {
 	t_cmd	*cmd;
@@ -72,24 +74,35 @@ static int	allocate_and_fill(t_cmd *cmd, t_token *tokens)
 
 void	handle_redirection(t_cmd *cmd, t_token **tokens)
 {
-	t_token	*tmp;
+	t_token	*op;
+	t_token	*file;
 
-	tmp = *tokens;
-	if (!tmp || !tmp->next)
+	op = *tokens;
+	if (!op || !op->next)
+		return ;
+	file = op->next;
+	// 1. Handle Input Redirection (<)
+	if (op->type == TOKEN_REDIRECT_IN)
 	{
-		if (tmp)
-			*tokens = tmp->next;
-		return;
+		if (cmd->infile >= 0)
+			close(cmd->infile);
+		cmd->infile = open(file->value, O_RDONLY);
 	}
-	if (tmp->type == TOKEN_REDIRECT_IN)
-		cmd->infile = open(tmp->next->value, O_RDONLY);
-	else if (tmp->type == TOKEN_REDIRECT_OUT)
-		cmd->outfile = open(tmp->next->value,
-				O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	else if (tmp->type == TOKEN_APPEND)
-		cmd->outfile = open(tmp->next->value,
-				O_CREAT | O_WRONLY | O_APPEND, 0644);
-	*tokens = tmp->next;
+	// 2. Handle Output Redirection (> and >>)
+	else if (op->type == TOKEN_REDIRECT_OUT || op->type == TOKEN_APPEND)
+	{
+		if (cmd->outfile >= 0)
+			close(cmd->outfile);
+		if (op->type == TOKEN_REDIRECT_OUT)
+			cmd->outfile = open(file->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		else
+			cmd->outfile = open(file->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
+	}
+	// 3. Error Checking
+	if (cmd->infile == -1 || cmd->outfile == -1)
+		perror(file->value);
+	// 4. Advance the token pointer past the filename
+	*tokens = file;
 }
 
 static void	free_cmds(t_cmd *head)
