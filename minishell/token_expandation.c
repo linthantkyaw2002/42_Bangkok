@@ -15,30 +15,6 @@ int is_quote(char c, int *in_single, int *in_double)
         return (0);
 }
 
-char *get_var_name(char *str, int *i)
-{
-        int start;
-
-        start = *i;
-        while (str[*i] && (ft_isalnum(str[*i]) || str[*i] == '_'))
-                (*i)++;
-        return (ft_substr(str, start, *i - start));
-}
-
-char *get_env_value(char *key, t_env *env)
-{
-        if (!key || !*key || !env)
-                return (NULL);
-
-        while (env)
-        {
-                if (env->key && ft_strcmp(env->key, key) == 0)
-                        return (env->value);
-                env = env->next;
-        }
-        return (NULL);
-}
-
 char *append_char(char *res, char c)
 {
         char *new;
@@ -47,7 +23,6 @@ char *append_char(char *res, char c)
         len = 0;
         if (res)
                 len = ft_strlen(res);
-
         new = malloc(len + 2);
         if (!new)
         {
@@ -91,6 +66,7 @@ char *append_str(char *res, const char *add)
         return (new);
 }
 
+
 char *handle_exit(char *res, int *i, int last_exit)
 {
         char *val;
@@ -120,22 +96,16 @@ char *handle_dollar(char *res, t_expand *exp)
         exp->i++;
         return (append_char(res, '$'));
     }
-
     exp->i++;
-
     if (exp->str[exp->i] == '?')
         return (handle_exit(res, &exp->i, exp->shell->last_exit));
-
     var = get_var_name(exp->str, &exp->i);
     if (!var)
         return (NULL);
-
     val = get_env_value(var, exp->shell->env);
     free(var);
-
     if (!val)
         val = "";
-
     return (append_str(res, val));
 }
 /*
@@ -190,4 +160,19 @@ char *expand_string(char *str, t_shell *shell)
         res = tmp;
     }
     return (res);
+}
+
+void expand_list(t_shell *shell)
+{
+        t_token *tmp;
+        char *expanded;
+        
+        tmp = shell->tokens;
+        while (tmp)
+        {
+                expanded = expand_string(tmp->value, shell);
+                free(tmp->value);
+                tmp->value = expanded;
+                tmp = tmp->next;
+        }
 }
