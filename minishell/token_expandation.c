@@ -152,11 +152,10 @@ char *expand_string(char *str, t_shell *shell)
     while (exp.str[exp.i])
     {
         tmp = process_expand_char(res, &exp);
-        if (!tmp)
-        {
-            free(res);
-            return (NULL);
-        }
+		if (!tmp)
+		{
+			return (NULL);
+		}
         res = tmp;
     }
     return (res);

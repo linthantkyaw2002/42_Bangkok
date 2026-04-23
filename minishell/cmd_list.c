@@ -81,14 +81,14 @@ void	handle_redirection(t_cmd *cmd, t_token **tokens)
 	if (!op || !op->next)
 		return ;
 	file = op->next;
-	// 1. Handle Input Redirection (<)
 	if (op->type == TOKEN_REDIRECT_IN)
 	{
 		if (cmd->infile >= 0)
 			close(cmd->infile);
 		cmd->infile = open(file->value, O_RDONLY);
+		if (cmd->infile == -1)
+			perror(file->value);
 	}
-	// 2. Handle Output Redirection (> and >>)
 	else if (op->type == TOKEN_REDIRECT_OUT || op->type == TOKEN_APPEND)
 	{
 		if (cmd->outfile >= 0)
@@ -97,15 +97,13 @@ void	handle_redirection(t_cmd *cmd, t_token **tokens)
 			cmd->outfile = open(file->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		else
 			cmd->outfile = open(file->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (cmd->outfile == -1)
+			perror(file->value);
 	}
-	// 3. Error Checking
-	if (cmd->infile == -1 || cmd->outfile == -1)
-		perror(file->value);
-	// 4. Advance the token pointer past the filename
 	*tokens = file;
 }
 
-static void	free_cmds(t_cmd *head)
+void	free_cmds(t_cmd *head)
 {
 	t_cmd	*tmp;
 	int		idx;

@@ -41,8 +41,14 @@ static int	get_word(char *s, t_token **list)
 			quote = s[i++];
 			while (s[i] && s[i] != quote)
 				i++;
-			if (s[i])
-				i++;
+			if (!s[i])
+			{
+				ft_putendl_fd("minishell: syntax error: unclosed quote", 2);
+				free_tokens(*list);
+				*list = NULL;
+				return (-1); 
+			}
+			i++;
 		}
 		else
 			i++;
@@ -55,6 +61,7 @@ t_token	*tokenize(char *input)
 {
 	t_token	*list;
 	int		i;
+	int		len;
 
 	list = NULL;
 	i = 0;
@@ -65,9 +72,12 @@ t_token	*tokenize(char *input)
 		if (!input[i])
 			break ;
 		if (ft_strchr("|<>", input[i]))
-			i += get_operator(&input[i], &list);
+			len = get_operator(&input[i], &list);
 		else
-			i += get_word(&input[i], &list);
+			len = get_word(&input[i], &list);
+		if (len == -1)
+			return (NULL);
+		i += len;
 	}
 	return (list);
 }

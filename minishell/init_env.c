@@ -72,3 +72,43 @@ t_env	*init_env(char **envp)
 	}
 	return (head);
 }
+
+static t_env	*create_env_kv(char *key, char *value)
+{
+	t_env	*new;
+
+	new = malloc(sizeof(t_env));
+	if (!new)
+		return (NULL);
+	new->key = ft_strdup(key);
+	new->value = NULL;
+	if (value)
+		new->value = ft_strdup(value);
+	new->next = NULL;
+	return (new);
+}
+
+void	set_env_value(t_env **env, char *key, char *value)
+{
+	t_env	*curr;
+
+	curr = *env;
+	while (curr)
+	{
+		if (ft_strncmp(curr->key, key, ft_strlen(key) + 1) == 0)
+		{
+			free(curr->value);
+			curr->value = NULL;
+			if (value)
+				curr->value = ft_strdup(value);
+			return ;
+		}
+		if (!curr->next)
+			break ;
+		curr = curr->next;
+	}
+	if (curr)
+		curr->next = create_env_kv(key, value);
+	else
+		*env = create_env_kv(key, value);
+}

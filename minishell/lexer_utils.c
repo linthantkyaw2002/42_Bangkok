@@ -44,3 +44,37 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
+
+static int	syntax_error(char *token_val)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(token_val, 2);
+	ft_putendl_fd("'", 2);
+	return (0);
+}
+
+int	check_syntax(t_token *tokens)
+{
+	t_token	*prev;
+
+	prev = NULL;
+	while (tokens)
+	{
+		if (tokens->type == TOKEN_PIPE)
+		{
+			if (!prev || prev->type == TOKEN_PIPE || !tokens->next)
+				return (syntax_error("|"));
+		}
+		else if (tokens->type >= TOKEN_REDIRECT_IN
+			&& tokens->type <= TOKEN_HEREDOC)
+		{
+			if (!tokens->next)
+				return (syntax_error("newline"));
+			if (tokens->next->type != TOKEN_WORD)
+				return (syntax_error(tokens->next->value));
+		}
+		prev = tokens;
+		tokens = tokens->next;
+	}
+	return (1);
+}
