@@ -10,8 +10,6 @@ t_cmd	*new_cmd(void)
 	cmd->args = NULL;
 	cmd->infile = -1;
 	cmd->outfile = -1;
-	cmd->append = 0;
-	cmd->heredoc = 0;
 	cmd->next = NULL;
 	return (cmd);
 }

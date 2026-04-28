@@ -5,10 +5,10 @@
 # include "libft.h"
 # include <fcntl.h>
 # include <limits.h>
-# include <readline/history.h>
-# include <readline/readline.h>
+#include <stdio.h> 
+#include <readline/readline.h>
+#include <readline/history.h>
 # include <signal.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/wait.h>
@@ -62,8 +62,6 @@ typedef struct s_cmd
 	char			**args;
 	int				infile;
 	int				outfile;
-	int				append;
-	int				heredoc;
 	struct s_cmd	*next;
 }					t_cmd;
 
