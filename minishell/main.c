@@ -8,20 +8,8 @@ int			g_signal_received = 0;
 
 static void	init_shell(t_shell *shell, char **envp)
 {
-	char	cwd[PATH_MAX];
-	char	*shell_path;
-
 	shell->env = init_env(envp);
 	increment_shlvl(&shell->env);
-	if (getcwd(cwd, sizeof(cwd)))
-	{
-		shell_path = ft_strjoin(cwd, "/minishell");
-		if (shell_path)
-		{
-			set_env_value(&shell->env, "SHELL", shell_path);
-			free(shell_path);
-		}
-	}
 	shell->tokens = NULL;
 	shell->last_exit = 0;
 }
@@ -43,7 +31,7 @@ static void	process_line(char *input, t_shell *shell)
 				if (g_signal_received != SIGINT)
 					execute_commands(cmd_list, shell);
 				free_cmds(cmd_list);
-				unlink(".heredoc_tmp");
+				unlink(".heredoc_tmp"); // Clean up heredoc temp file
 			}
 		}
 		else
@@ -60,7 +48,7 @@ static char	*get_input(void)
 
 	if (isatty(STDIN_FILENO))
 		return (readline("minishell$ "));
-	input = get_next_line(STDIN_FILENO);
+	input = read_byte_by_byte();
 	if (input)
 	{
 		len = ft_strlen(input);

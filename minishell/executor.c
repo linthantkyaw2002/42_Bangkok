@@ -26,26 +26,26 @@ static void	handle_io(t_cmd *cmd, int prev_fd, int p_fd[2])
 static void	run_child(t_cmd *cmd, t_shell *sh, int prev_fd, int p_fd[2])
 {
 	char	*path;
-	char	**envp;
+	char	**real_args;
+	int		i;
 
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	handle_io(cmd, prev_fd, p_fd);
 	if (!cmd->args || !cmd->args[0])
 		exit(0);
-	if (is_builtin(cmd->args))
-		exit(exe_builtin(cmd->args, sh));
-	path = get_cmd_path(cmd->args[0], sh->env);
-	if (!path)
-	{
-		ft_putstr_fd("minishell: command not found: ", 2);
-		ft_putendl_fd(cmd->args[0], 2);
-		exit(127);
-	}
-	envp = env_to_array(sh->env);
-	execve(path, cmd->args, envp);
-	perror("minishell: execve");
-	exit(1);
+	i = 0;
+	while (cmd->args[i] && cmd->args[i][0] == '\0')
+		i++;
+	if (!cmd->args[i])
+		exit(0);
+	real_args = &cmd->args[i];
+	if (is_builtin(real_args))
+		exit(exe_builtin(real_args, sh));
+	path = get_cmd_path(real_args[0], sh->env);
+	if (path)
+		execve(path, real_args, env_to_array(sh->env));
+	handle_exec_error(path, real_args[0]);
 }
 
 static void	wait_pipeline(pid_t last_pid, t_shell *sh)
@@ -75,14 +75,18 @@ static void	fork_commands(t_cmd *cmd, t_shell *sh)
 	pid_t	pid;
 
 	prev_fd = -1;
+	pid = -1;
 	setup_execution_signals();
 	while (cmd)
 	{
 		if (cmd->next)
 			pipe(p_fd);
-		pid = fork();
-		if (pid == 0)
-			run_child(cmd, sh, prev_fd, p_fd);
+		if (cmd->error == 0)
+		{
+			pid = fork();
+			if (pid == 0)
+				run_child(cmd, sh, prev_fd, p_fd);
+		}
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd->next)
@@ -92,16 +96,23 @@ static void	fork_commands(t_cmd *cmd, t_shell *sh)
 		}
 		cmd = cmd->next;
 	}
-	wait_pipeline(pid, sh);
+	if (pid != -1)
+		wait_pipeline(pid, sh);
 }
 
 void	execute_commands(t_cmd *cmd_list, t_shell *sh)
 {
-	int saved_stdin;
-	int saved_stdout;
+	int		saved_stdin;
+	int		saved_stdout;
+	t_cmd	*last;
 
 	if (!cmd_list)
 		return ;
+	if (!cmd_list->next && cmd_list->error == 1)
+	{
+		sh->last_exit = 1;
+		return ;
+	}
 	if (!cmd_list->next && cmd_list->args && is_builtin(cmd_list->args))
 	{
 		saved_stdin = dup(STDIN_FILENO);
@@ -115,4 +126,9 @@ void	execute_commands(t_cmd *cmd_list, t_shell *sh)
 		return ;
 	}
 	fork_commands(cmd_list, sh);
+	last = cmd_list;
+	while (last->next)
+		last = last->next;
+	if (last->error == 1)
+		sh->last_exit = 1;
 }

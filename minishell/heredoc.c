@@ -1,5 +1,17 @@
 #include "minishell.h"
 
+static char *get_heredoc_name(void)
+{
+    static int  i = 0;
+    char        *num;
+    char        *name;
+
+    num = ft_itoa(i++);
+    name = ft_strjoin(".heredoc_tmp_", num);
+    free(num);
+    return (name);
+}
+
 static char	*handle_expansion(char *res, char *line, int *i, t_shell *shell)
 {
 	char	*var;
@@ -71,7 +83,7 @@ int	read_heredoc(char *delimiter, t_shell *shell)
 	pid_t	pid;
 	int		status;
 
-	fd = open(".heredoc_tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	fd = open(get_heredoc_name(), O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return (perror("minishell: heredoc"), -1);
 	signal(SIGINT, SIG_IGN);
@@ -88,5 +100,5 @@ int	read_heredoc(char *delimiter, t_shell *shell)
 		g_signal_received = SIGINT;
 		return (-1);
 	}
-	return (open(".heredoc_tmp", O_RDONLY));
+	return (open(get_heredoc_name(), O_RDONLY));
 }

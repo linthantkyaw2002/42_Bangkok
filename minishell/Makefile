@@ -12,7 +12,7 @@ ifeq ($(UNAME), Darwin)
 	RL_LIB       = -L$(READLINE_DIR)/lib -lreadline
 else
 	# Linux: Use the standard system Readline
-	RL_INC       = 
+	RL_INC       =
 	RL_LIB       = -lreadline
 endif
 
@@ -36,13 +36,12 @@ SRCS        = main.c \
                 executor.c \
                 handle_redirection.c \
                 heredoc.c \
+                read_byte_by_byte.c \
                 signal.c \
                 token_expand_utils.c \
                 token_expand.c \
                 token_utils.c \
                 tokenize.c \
-                get_next_line/get_next_line.c \
-                get_next_line/get_next_line_utils.c \
 
 OBJS        = $(SRCS:.c=.o)
 

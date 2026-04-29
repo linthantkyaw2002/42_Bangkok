@@ -36,7 +36,7 @@ int	mini_exit(char **args, t_shell *sh)
 	if (!is_numeric(args[1]))
 	{
 		ft_putendl_fd("minishell: exit: numeric argument required", 2);
-		clean_and_exit(sh, 255);
+		clean_and_exit(sh, 2);
 	}
 	if (args[2])
 	{
