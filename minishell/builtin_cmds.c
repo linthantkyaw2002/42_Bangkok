@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_cmds.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 20:51:43 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 20:51:43 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int is_n_flag(char *str)
+static int	is_n_flag(char *str)
 {
-	int i;
+	int	i;
 
 	if (!str || str[0] != '-' || str[1] != 'n')
 		return (0);
@@ -14,10 +26,10 @@ static int is_n_flag(char *str)
 	return (1);
 }
 
-int mini_echo(char **args)
+int	mini_echo(char **args)
 {
-	int i;
-	int n_flag;
+	int	i;
+	int	n_flag;
 
 	i = 1;
 	n_flag = 0;
@@ -38,9 +50,9 @@ int mini_echo(char **args)
 	return (0);
 }
 
-int mini_pwd(void)
+int	mini_pwd(void)
 {
-	char cwd[1024];
+	char	cwd[1024];
 
 	if (getcwd(cwd, sizeof(cwd)))
 	{
@@ -50,10 +62,10 @@ int mini_pwd(void)
 	return (1);
 }
 
-static void update_pwd(t_env **env)
+static void	update_pwd(t_env **env)
 {
-	char cwd[1024];
-	char *oldpwd;
+	char	cwd[1024];
+	char	*oldpwd;
 
 	oldpwd = get_env_value("PWD", *env);
 	if (oldpwd)
@@ -62,9 +74,9 @@ static void update_pwd(t_env **env)
 		set_env_value(env, "PWD", cwd);
 }
 
-int mini_cd(char **args, t_env **env)
+int	mini_cd(char **args, t_env **env)
 {
-	char *path;
+	char	*path;
 
 	if (args[1] && args[2])
 	{

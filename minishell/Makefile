@@ -34,6 +34,7 @@ SRCS        = main.c \
                 env_utils.c \
                 exec_utils.c \
                 executor.c \
+				expand_list.c \
                 handle_redirection.c \
                 heredoc.c \
                 read_byte_by_byte.c \

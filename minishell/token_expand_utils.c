@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_expand_utils.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 21:28:37 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 21:28:37 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	syntax_error(char *token_val)
@@ -73,9 +85,9 @@ char	*append_char(char *res, char c)
 
 char	*append_str(char *res, const char *add)
 {
-	char *new;
-	int len1;
-	int len2;
+	char	*new;
+	int		len1;
+	int		len2;
 
 	len1 = 0;
 	if (res)

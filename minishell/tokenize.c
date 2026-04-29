@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 21:31:39 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 21:32:15 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_token	*create_token(char *value, t_token_type type)
@@ -67,9 +79,9 @@ static int	get_word(char *s, t_token **list)
 
 t_token	*tokenize(char *input)
 {
-	t_token *list;
-	int i;
-	int len;
+	t_token	*list;
+	int		i;
+	int		len;
 
 	list = NULL;
 	i = 0;

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 20:59:07 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 20:59:07 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static int env_list_size(t_env *env)
+static int	env_list_size(t_env *env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (env)
@@ -13,11 +25,11 @@ static int env_list_size(t_env *env)
 	return (i);
 }
 
-char **env_to_array(t_env *env)
+char	**env_to_array(t_env *env)
 {
-	char **arr;
-	int i;
-	char *tmp;
+	char	**arr;
+	int		i;
+	char	*tmp;
 
 	arr = malloc(sizeof(char *) * (env_list_size(env) + 1));
 	if (!arr)
@@ -40,41 +52,24 @@ char **env_to_array(t_env *env)
 	return (arr);
 }
 
-static void free_split(char **split)
+static void	free_split(char **split)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!split)
-		return;
+		return ;
 	while (split[i])
 		free(split[i++]);
 	free(split);
 }
 
-static char *check_direct_path(char *cmd)
+static char	*find_valid_path(char **paths, char *cmd)
 {
-	if (ft_strchr(cmd, '/'))
-		return (ft_strdup(cmd));
-	return (NULL);
-}
+	char	*part;
+	char	*full;
+	int		i;
 
-char *get_cmd_path(char *cmd, t_env *env)
-{
-	char **paths;
-	char *part;
-	char *full;
-	int i;
-
-	if (!cmd || cmd[0] == '\0')
-		return (NULL);
-	full = check_direct_path(cmd);
-	if (full)
-		return (full);
-	part = get_env_value("PATH", env);
-	if (!part)
-		return (NULL);
-	paths = ft_split(part, ':');
 	i = -1;
 	while (paths && paths[++i])
 	{
@@ -82,9 +77,27 @@ char *get_cmd_path(char *cmd, t_env *env)
 		full = ft_strjoin(part, cmd);
 		free(part);
 		if (access(full, F_OK | X_OK) == 0)
-			return (free_split(paths), full);
+			return (full);
 		free(full);
 	}
-	free_split(paths);
 	return (NULL);
+}
+
+char	*get_cmd_path(char *cmd, t_env *env)
+{
+	char	**paths;
+	char	*part;
+	char	*full;
+
+	if (!cmd || cmd[0] == '\0')
+		return (NULL);
+	if (ft_strchr(cmd, '/'))
+		return (ft_strdup(cmd));
+	part = get_env_value("PATH", env);
+	if (!part)
+		return (NULL);
+	paths = ft_split(part, ':');
+	full = find_valid_path(paths, cmd);
+	free_split(paths);
+	return (full);
 }

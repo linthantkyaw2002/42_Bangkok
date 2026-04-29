@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 21:24:34 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 21:24:34 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-static char *get_heredoc_name(void)
+static char	*get_heredoc_name(void)
 {
-    static int  i = 0;
-    char        *num;
-    char        *name;
+	static int	i = 0;
+	char		*num;
+	char		*name;
 
-    num = ft_itoa(i++);
-    name = ft_strjoin(".heredoc_tmp_", num);
-    free(num);
-    return (name);
+	num = ft_itoa(i++);
+	name = ft_strjoin(".heredoc_tmp_", num);
+	free(num);
+	return (name);
 }
 
 static char	*handle_expansion(char *res, char *line, int *i, t_shell *shell)
@@ -45,8 +57,8 @@ static char	*expand_heredoc_line(char *line, t_shell *shell)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '$' && line[i + 1] && (ft_isalnum(line[i + 1])
-				|| line[i + 1] == '_' || line[i + 1] == '?'))
+		if (line[i] == '$' && line[i + 1] && (ft_isalnum(line[i + 1]) || line[i
+					+ 1] == '_' || line[i + 1] == '?'))
 			res = handle_expansion(res, line, &i, shell);
 		else
 			res = append_char(res, line[i++]);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_list_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 20:57:12 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 20:57:12 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_cmd	*new_cmd(void)
@@ -59,8 +71,8 @@ void	fill_args(t_cmd *cmd, t_token *tokens)
 
 void	free_cmds(t_cmd *head)
 {
-	t_cmd *tmp;
-	int idx;
+	t_cmd	*tmp;
+	int		idx;
 
 	while (head)
 	{

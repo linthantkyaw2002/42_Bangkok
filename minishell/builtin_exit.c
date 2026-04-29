@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_exit.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 20:54:56 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 20:54:56 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	is_numeric(char *str)
@@ -27,7 +39,7 @@ static void	clean_and_exit(t_shell *sh, int status)
 
 int	mini_exit(char **args, t_shell *sh)
 {
-	int status;
+	int	status;
 
 	if (isatty(STDIN_FILENO))
 		ft_putendl_fd("exit", STDOUT_FILENO);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 20:56:19 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 20:56:19 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	is_valid_env_key(char *key)
@@ -38,8 +50,8 @@ static void	process_export_arg(t_env **env, char *arg)
 
 int	mini_export(char **args, t_env **env)
 {
-	int i;
-	int status;
+	int	i;
+	int	status;
 
 	i = 1;
 	status = 0;

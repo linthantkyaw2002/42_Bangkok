@@ -1,4 +1,16 @@
-﻿#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token_expand.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 21:31:15 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 21:31:15 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 char	*handle_exit(char *res, int *i, int last_exit)
 {
@@ -78,19 +90,4 @@ char	*expand_string(char *str, t_shell *shell)
 		res = tmp;
 	}
 	return (res);
-}
-
-void	expand_list(t_shell *shell)
-{
-	t_token *tmp;
-	char *expanded;
-
-	tmp = shell->tokens;
-	while (tmp)
-	{
-		expanded = expand_string(tmp->value, shell);
-		free(tmp->value);
-		tmp->value = expanded;
-		tmp = tmp->next;
-	}
 }

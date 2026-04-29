@@ -31,7 +31,6 @@ static void	process_line(char *input, t_shell *shell)
 				if (g_signal_received != SIGINT)
 					execute_commands(cmd_list, shell);
 				free_cmds(cmd_list);
-				unlink(".heredoc_tmp"); // Clean up heredoc temp file
 			}
 		}
 		else

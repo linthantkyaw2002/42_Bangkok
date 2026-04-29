@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 21:19:23 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 21:19:23 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	handle_io(t_cmd *cmd, int prev_fd, int p_fd[2])
@@ -29,6 +41,8 @@ static void	run_child(t_cmd *cmd, t_shell *sh, int prev_fd, int p_fd[2])
 	char	**real_args;
 	int		i;
 
+	if (cmd->error != 0)
+		exit(1);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	handle_io(cmd, prev_fd, p_fd);
@@ -81,12 +95,9 @@ static void	fork_commands(t_cmd *cmd, t_shell *sh)
 	{
 		if (cmd->next)
 			pipe(p_fd);
-		if (cmd->error == 0)
-		{
-			pid = fork();
-			if (pid == 0)
-				run_child(cmd, sh, prev_fd, p_fd);
-		}
+		pid = fork();
+		if (pid == 0)
+			run_child(cmd, sh, prev_fd, p_fd);
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (cmd->next)
@@ -100,35 +111,28 @@ static void	fork_commands(t_cmd *cmd, t_shell *sh)
 		wait_pipeline(pid, sh);
 }
 
-void	execute_commands(t_cmd *cmd_list, t_shell *sh)
+void	execute_commands(t_cmd *cmd, t_shell *sh)
 {
-	int		saved_stdin;
-	int		saved_stdout;
-	t_cmd	*last;
+	int	fd[2];
 
-	if (!cmd_list)
+	if (!cmd)
 		return ;
-	if (!cmd_list->next && cmd_list->error == 1)
+	if (!cmd->next && cmd->error == 1)
 	{
 		sh->last_exit = 1;
 		return ;
 	}
-	if (!cmd_list->next && cmd_list->args && is_builtin(cmd_list->args))
+	if (!cmd->next && is_builtin(cmd->args))
 	{
-		saved_stdin = dup(STDIN_FILENO);
-		saved_stdout = dup(STDOUT_FILENO);
-		handle_io(cmd_list, -1, NULL);
-		sh->last_exit = exe_builtin(cmd_list->args, sh);
-		dup2(saved_stdin, STDIN_FILENO);
-		dup2(saved_stdout, STDOUT_FILENO);
-		close(saved_stdin);
-		close(saved_stdout);
+		fd[0] = dup(STDIN_FILENO);
+		fd[1] = dup(STDOUT_FILENO);
+		handle_io(cmd, -1, NULL);
+		sh->last_exit = exe_builtin(cmd->args, sh);
+		dup2(fd[0], STDIN_FILENO);
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[0]);
+		close(fd[1]);
 		return ;
 	}
-	fork_commands(cmd_list, sh);
-	last = cmd_list;
-	while (last->next)
-		last = last->next;
-	if (last->error == 1)
-		sh->last_exit = 1;
+	fork_commands(cmd, sh);
 }

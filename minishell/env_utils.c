@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/29 20:58:20 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/29 20:58:20 by lkyaw            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*get_var_name(char *str, int *i)
@@ -65,9 +77,9 @@ void	set_env_value(t_env **env, char *key, char *value)
 
 void	increment_shlvl(t_env **env)
 {
-	char *current_val;
-	char *new_val;
-	int lvl;
+	char	*current_val;
+	char	*new_val;
+	int		lvl;
 
 	current_val = get_env_value("SHLVL", *env);
 	if (current_val)
