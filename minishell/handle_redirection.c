@@ -12,59 +12,77 @@
 
 #include "minishell.h"
 
-static void	handle_out(t_cmd *cmd, t_token *op, t_token *file)
-{
-	if (cmd->outfile >= 0)
-		close(cmd->outfile);
-	if (op->type == TOKEN_REDIRECT_OUT)
-		cmd->outfile = open(file->value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	else
-		cmd->outfile = open(file->value, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	if (cmd->outfile == -1)
-	{
-		perror(file->value);
-		cmd->error = 1;
-	}
-}
+/* ************************************************************************** */
+/* */
+/* :::      ::::::::   */
+/* handle_redirection.c                               :+:      :+:    :+:   */
+/* +:+ +:+         +:+     */
+/* By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
+/* +#+#+#+#+#+   +#+           */
+/* Created: 2026/04/29 21:24:01 by lkyaw             #+#    #+#             */
+/* Updated: 2026/04/30 22:45:00 by lkyaw            ###   ########.fr       */
+/* */
+/* ************************************************************************** */
 
-static void	handle_in(t_cmd *cmd, t_token *op, t_token *file, t_shell *shell)
+#include "minishell.h"
+
+static void	handle_file(t_cmd *cmd, t_token *op, char *file)
 {
-	if (cmd->infile >= 0)
-		close(cmd->infile);
 	if (op->type == TOKEN_REDIRECT_IN)
 	{
-		cmd->infile = open(file->value, O_RDONLY);
+		if (cmd->infile >= 0)
+			close(cmd->infile);
+		cmd->infile = open(file, O_RDONLY);
 		if (cmd->infile == -1)
-		{
-			perror(file->value);
 			cmd->error = 1;
-		}
 	}
-	else if (op->type == TOKEN_HEREDOC)
+	else
 	{
-		cmd->infile = read_heredoc(file->value, shell);
+		if (cmd->outfile >= 0)
+			close(cmd->outfile);
+		if (op->type == TOKEN_REDIRECT_OUT)
+			cmd->outfile = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		else
+			cmd->outfile = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		if (cmd->outfile == -1)
+			cmd->error = 1;
+	}
+	if (cmd->error)
+		perror(file);
+}
+
+static void	dispatch_redir(t_cmd *cmd, t_token *op, char *clean, t_shell *sh)
+{
+	if (op->type == TOKEN_HEREDOC)
+	{
+		cmd->infile = read_heredoc(clean, sh, has_quotes(op->next->value));
 		if (cmd->infile == -1 && g_signal_received == SIGINT)
 			cmd->error = 1;
 	}
+	else
+		handle_file(cmd, op, clean);
 }
 
 void	handle_redirection(t_cmd *cmd, t_token **tokens, t_shell *shell)
 {
 	t_token	*op;
-	t_token	*file;
+	char	*clean;
 
 	op = *tokens;
 	if (!op || !op->next)
 		return ;
-	file = op->next;
-	if (!cmd->error)
+	if (op->next->type == TOKEN_AMBIGUOUS)
 	{
-		if (op->type == TOKEN_REDIRECT_OUT || op->type == TOKEN_APPEND)
-			handle_out(cmd, op, file);
-		else if (op->type == TOKEN_REDIRECT_IN || op->type == TOKEN_HEREDOC)
-			handle_in(cmd, op, file, shell);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(op->next->value, 2);
+		ft_putendl_fd(": ambiguous redirect", 2);
+		cmd->error = 1;
 	}
-	*tokens = file;
+	clean = strip_quotes(op->next->value);
+	if (!cmd->error)
+		dispatch_redir(cmd, op, clean, shell);
+	free(clean);
+	*tokens = op->next;
 }
 
 static void	print_error_exit(char *cmd, char *msg, int code)

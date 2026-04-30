@@ -1,0 +1,28 @@
+{
+   suppress_readline_leaks
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:readline
+}
+{
+   suppress_add_history_leaks
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:add_history
+}
+{
+   suppress_rl_initialize_leaks
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:rl_initialize
+}
+{
+   suppress_rl_clear_history_leaks
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:rl_clear_history
+}

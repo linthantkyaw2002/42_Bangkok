@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/29 21:24:34 by lkyaw             #+#    #+#             */
-/*   Updated: 2026/04/29 21:24:34 by lkyaw            ###   ########.fr       */
+/*   Created: 2026/04/30 20:50:52 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/30 20:50:52 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,9 @@ static char	*expand_heredoc_line(char *line, t_shell *shell)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '$' && line[i + 1] && (ft_isalnum(line[i + 1]) || line[i
-					+ 1] == '_' || line[i + 1] == '?'))
+		if (line[i] == '$' && line[i + 1]
+			&& (ft_isalnum(line[i + 1]) || line[i + 1] == '_'
+				|| line[i + 1] == '?'))
 			res = handle_expansion(res, line, &i, shell);
 		else
 			res = append_char(res, line[i++]);
@@ -66,7 +67,7 @@ static char	*expand_heredoc_line(char *line, t_shell *shell)
 	return (res);
 }
 
-static void	heredoc_child(char *delimiter, t_shell *shell, int fd)
+static void	heredoc_child(char *delim, t_shell *sh, int fd, int quoted)
 {
 	char	*line;
 	char	*expanded;
@@ -75,12 +76,15 @@ static void	heredoc_child(char *delimiter, t_shell *shell, int fd)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || ft_strcmp(line, delimiter) == 0)
+		if (!line || ft_strcmp(line, delim) == 0)
 		{
 			free(line);
 			break ;
 		}
-		expanded = expand_heredoc_line(line, shell);
+		if (quoted)
+			expanded = ft_strdup(line);
+		else
+			expanded = expand_heredoc_line(line, sh);
 		ft_putendl_fd(expanded, fd);
 		free(expanded);
 		free(line);
@@ -89,28 +93,29 @@ static void	heredoc_child(char *delimiter, t_shell *shell, int fd)
 	exit(0);
 }
 
-int	read_heredoc(char *delimiter, t_shell *shell)
+int	read_heredoc(char *delim, t_shell *sh, int q)
 {
 	int		fd;
-	pid_t	pid;
-	int		status;
+	int		st;
+	char	*nm;
 
-	fd = open(get_heredoc_name(), O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	nm = get_heredoc_name();
+	fd = open(nm, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
-		return (perror("minishell: heredoc"), -1);
+		return (perror("minishell: heredoc"), free(nm), -1);
 	signal(SIGINT, SIG_IGN);
-	pid = fork();
-	if (pid == 0)
-		heredoc_child(delimiter, shell, fd);
-	waitpid(pid, &status, 0);
+	if (fork() == 0)
+		heredoc_child(delim, sh, fd, q);
+	wait(&st);
 	setup_signals();
 	close(fd);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		shell->last_exit = 130;
-		write(STDOUT_FILENO, "\n", 1);
+	if (WIFSIGNALED(st) && WTERMSIG(st) == SIGINT)
 		g_signal_received = SIGINT;
-		return (-1);
-	}
-	return (open(get_heredoc_name(), O_RDONLY));
+	if (g_signal_received == SIGINT && write(1, "\n", 1))
+		sh->last_exit = 130;
+	else
+		fd = open(nm, O_RDONLY);
+	unlink(nm);
+	free(nm);
+	return (fd);
 }

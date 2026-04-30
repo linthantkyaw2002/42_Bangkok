@@ -6,7 +6,7 @@
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/29 21:31:30 by lkyaw             #+#    #+#             */
-/*   Updated: 2026/04/29 21:31:31 by lkyaw            ###   ########.fr       */
+/*   Updated: 2026/04/30 21:17:01 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,20 @@ int	ft_strcmp(const char *s1, const char *s2)
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+int	has_quotes(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			return (1);
+		i++;
+	}
+	return (0);
 }

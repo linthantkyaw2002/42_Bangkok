@@ -12,14 +12,6 @@
 
 #include "minishell.h"
 
-static int	syntax_error(char *token_val)
-{
-	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
-	ft_putstr_fd(token_val, 2);
-	ft_putendl_fd("'", 2);
-	return (0);
-}
-
 int	check_syntax(t_token *tokens)
 {
 	t_token	*prev;
@@ -30,15 +22,13 @@ int	check_syntax(t_token *tokens)
 		if (tokens->type == TOKEN_PIPE)
 		{
 			if (!prev || prev->type == TOKEN_PIPE || !tokens->next)
-				return (syntax_error("|"));
+				return (0);
 		}
 		else if (tokens->type >= TOKEN_REDIRECT_IN
 			&& tokens->type <= TOKEN_HEREDOC)
 		{
-			if (!tokens->next)
-				return (syntax_error("newline"));
-			if (tokens->next->type != TOKEN_WORD)
-				return (syntax_error(tokens->next->value));
+			if (!tokens->next || tokens->next->type != TOKEN_WORD)
+				return (0);
 		}
 		prev = tokens;
 		tokens = tokens->next;
@@ -108,4 +98,27 @@ char	*append_str(char *res, const char *add)
 	new[len1 + len2] = '\0';
 	free(res);
 	return (new);
+}
+
+char	*strip_quotes(char *str)
+{
+	char	*res;
+	int		i;
+	int		j;
+
+	if (!str)
+		return (NULL);
+	res = malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!res)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] != '\'' && str[i] != '\"')
+			res[j++] = str[i];
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
 }

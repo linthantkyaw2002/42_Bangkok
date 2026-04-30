@@ -5,15 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkyaw <lkyaw@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/29 21:26:49 by lkyaw             #+#    #+#             */
-/*   Updated: 2026/04/29 21:26:49 by lkyaw            ###   ########.fr       */
+/*   Created: 2026/04/30 21:19:51 by lkyaw             #+#    #+#             */
+/*   Updated: 2026/04/30 21:19:51 by lkyaw            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
 # include <errno.h>
 # include <fcntl.h>
 # include <limits.h>
@@ -26,6 +25,7 @@
 # include <sys/stat.h>
 # include <sys/wait.h>
 # include <unistd.h>
+# include "libft.h"
 
 extern int	g_signal_received;
 
@@ -44,6 +44,7 @@ typedef enum s_token_type
 	TOKEN_REDIRECT_OUT,
 	TOKEN_APPEND,
 	TOKEN_HEREDOC,
+	TOKEN_AMBIGUOUS,
 	TOKEN_EOF
 }					t_token_type;
 
@@ -83,7 +84,7 @@ typedef struct s_cmd
    2. FUNCTION PROTOTYPES
    ========================================== */
 
-// Libft Utils (Assuming these aren't in libft.h)
+// Libft Utils
 int					ft_isspace(char c);
 int					ft_strcmp(const char *s1, const char *s2);
 
@@ -137,7 +138,11 @@ int					mini_exit(char **args, t_shell *sh);
 char				*get_cmd_path(char *cmd, t_env *env);
 char				**env_to_array(t_env *env);
 void				execute_commands(t_cmd *cmd_list, t_shell *sh);
-int					read_heredoc(char *delimiter, t_shell *shell);
 void				handle_exec_error(char *path, char *cmd_name);
+
+// New Utils & Heredoc
+int					read_heredoc(char *delimiter, t_shell *shell, int quoted);
+char				*strip_quotes(char *str);
+int					has_quotes(char *str);
 
 #endif
