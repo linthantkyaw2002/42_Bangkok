@@ -12,26 +12,30 @@
 
 #include "minishell.h"
 
-int	check_syntax(t_token *tokens)
+int	check_syntax(t_token *t)
 {
-	t_token	*prev;
+	t_token	*p;
 
-	prev = NULL;
-	while (tokens)
+	p = NULL;
+	while (t)
 	{
-		if (tokens->type == TOKEN_PIPE)
+		if ((t->type == TOKEN_PIPE && (!p || p->type == TOKEN_PIPE
+					|| !t->next)) || (t->type >= TOKEN_REDIRECT_IN
+				&& t->type <= TOKEN_HEREDOC
+				&& (!t->next || t->next->type != TOKEN_WORD)))
 		{
-			if (!prev || prev->type == TOKEN_PIPE || !tokens->next)
-				return (0);
+			ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+			if (t->type == TOKEN_PIPE)
+				ft_putstr_fd("|", 2);
+			else if (!t->next)
+				ft_putstr_fd("newline", 2);
+			else
+				ft_putstr_fd(t->next->value, 2);
+			ft_putendl_fd("'", 2);
+			return (0);
 		}
-		else if (tokens->type >= TOKEN_REDIRECT_IN
-			&& tokens->type <= TOKEN_HEREDOC)
-		{
-			if (!tokens->next || tokens->next->type != TOKEN_WORD)
-				return (0);
-		}
-		prev = tokens;
-		tokens = tokens->next;
+		p = t;
+		t = t->next;
 	}
 	return (1);
 }

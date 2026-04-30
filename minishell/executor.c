@@ -38,28 +38,29 @@ static void	handle_io(t_cmd *cmd, int prev_fd, int p_fd[2])
 static void	run_child(t_cmd *cmd, t_shell *sh, int prev_fd, int p_fd[2])
 {
 	char	*path;
-	char	**real_args;
-	int		i;
+	char	**envp;
+	int		j;
 
-	if (cmd->error != 0)
+	if (cmd->error)
 		exit(1);
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	handle_io(cmd, prev_fd, p_fd);
 	if (!cmd->args || !cmd->args[0])
 		exit(0);
-	i = 0;
-	while (cmd->args[i] && cmd->args[i][0] == '\0')
-		i++;
-	if (!cmd->args[i])
-		exit(0);
-	real_args = &cmd->args[i];
-	if (is_builtin(real_args))
-		exit(exe_builtin(real_args, sh));
-	path = get_cmd_path(real_args[0], sh->env);
+	if (is_builtin(cmd->args))
+		exit(exe_builtin(cmd->args, sh));
+	path = get_cmd_path(cmd->args[0], sh->env);
 	if (path)
-		execve(path, real_args, env_to_array(sh->env));
-	handle_exec_error(path, real_args[0]);
+	{
+		envp = env_to_array(sh->env);
+		execve(path, cmd->args, envp);
+		j = -1;
+		while (envp && envp[++j])
+			free(envp[j]);
+		free(envp);
+	}
+	handle_exec_error(path, cmd->args[0]);
 }
 
 static void	wait_pipeline(pid_t last_pid, t_shell *sh)
